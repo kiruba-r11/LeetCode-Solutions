@@ -11,156 +11,113 @@
  */
 class Solution {
 public:
+    void initialiseStack(stack <pair <TreeNode* , int>> &s , TreeNode* root) {
+        
+        if(root) s.push({root , 1});
+    }
+    
+    void performTraversal(stack <pair <TreeNode* , int>> &s , bool canDoPostOrder , TreeNode* &currentNode , vector <int> &ans) {
+        if(!s.empty()) {
+            
+            pair <TreeNode* , int> node = s.top();
+            s.pop();
+
+            // Denotes preorder
+            if(node.second == 1) {
+                // Insert the current node for inorder
+                s.push({node.first , 2});
+
+                // Insert the left child if it is present
+                if(node.first->left != NULL) s.push({node.first->left , 1});  
+            }
+            // Denotes inorder
+            else if(node.second == 2) {
+                // Insert the current node for postorder
+                s.push({node.first , 3});
+
+                if(canDoPostOrder) {
+                    ans.push_back(node.first->val);
+
+                    // Insert the right child it if is present
+                    if(node.first->right != NULL) s.push({node.first->right , 1});
+                } else {
+                    currentNode = node.first;
+                }
+            }
+        }
+    }
+    
+    void pushInorder(stack <pair <TreeNode* , int>> &s) {
+        pair <TreeNode* , int> node = s.top();
+        s.pop();
+
+        s.push({node.first , 2});
+    }
+    
     vector<int> getAllElements(TreeNode* root1, TreeNode* root2) {
         
         vector <int> ans;
         
         stack <pair <TreeNode* , int>> s1 , s2;
         
-        if(root1 != NULL)
-            s1.push({root1 , 1});
-        
-        if(root2 != NULL)
-            s2.push({root2 , 1});
+        // Intialise the stack
+        initialiseStack(s1 , root1);
+        initialiseStack(s2 , root2);
         
         while(!s1.empty() && !s2.empty()) {
             
-            int stackOne = INT_MAX , stackTwo = INT_MAX;
             TreeNode *node1 = NULL , *node2 = NULL;
             
             if(!s1.empty()) {
-                pair <TreeNode* , int> node = s1.top();
-                s1.pop();
-                
-                // Denotes preorder
-                if(node.second == 1) {
-                    // Insert the current node for inorder
-                    s1.push({node.first , 2});
-                    
-                    // Insert the left child if it is present
-                    if(node.first->left != NULL) s1.push({node.first->left , 1});  
-                }
-                // Denotes inorder
-                else if(node.second == 2) {
-                    // Insert the current node for postorder
-                    s1.push({node.first , 3});
-                    
-                    stackOne = min(stackOne , node.first->val);
-                    node1 = node.first;
-                }
+                performTraversal(s1 , false , node1 , ans);
             }
             
             if(!s2.empty()) {
-                pair <TreeNode* , int> node = s2.top();
-                s2.pop();
-                
-                // Denotes preorder
-                if(node.second == 1) {
-                    // Insert the current node for inorder
-                    s2.push({node.first , 2});
-                    
-                    // Insert the left child if it is present
-                    if(node.first->left != NULL) s2.push({node.first->left , 1});  
-                }
-                // Denotes inorder
-                else if(node.second == 2) {
-                    // Insert the current node for postorder
-                    s2.push({node.first , 3});
-                    
-                    stackTwo = min(stackTwo , node.first->val);
-                    node2 = node.first;
-                }
+                performTraversal(s2 , false , node2 , ans);
             }
             
-            if(stackOne != INT_MAX && stackTwo != INT_MAX) {
-                if(stackOne == stackTwo) {
-                    ans.push_back(stackOne);
-                    ans.push_back(stackTwo);
+            // Both nodes are at inorder
+            if(node1 && node2) {
+                
+                // Compare values
+                if(node1->val == node2->val) {
+                    ans.push_back(node1->val);
+                    ans.push_back(node2->val);
                     
                     if(node1->right != NULL) s1.push({node1->right , 1});
                     if(node2->right != NULL) s2.push({node2->right , 1});
-                } else if(stackOne < stackTwo) {
-                    ans.push_back(stackOne);
+                } else if(node1->val < node2->val) {
+                    ans.push_back(node1->val);
                     
-                    pair <TreeNode* , int> node = s2.top();
-                    s2.pop();
-                    
-                    s2.push({node.first , 2});
+                    pushInorder(s2);
                     
                     if(node1->right != NULL) s1.push({node1->right , 1});
                 } else {
-                    ans.push_back(stackTwo);
+                    ans.push_back(node2->val);
                     
-                    pair <TreeNode* , int> node = s1.top();
-                    s1.pop();
-                    
-                    s1.push({node.first , 2});
+                    pushInorder(s1);
                     
                     if(node2->right != NULL) s2.push({node2->right , 1});
                 }
-            } else if(stackOne != INT_MAX) {
-                
-                pair <TreeNode* , int> node = s1.top();
-                s1.pop();
-
-                s1.push({node.first , 2});
-                
-            } else if(stackTwo != INT_MAX) {
-                
-                pair <TreeNode* , int> node = s2.top();
-                s2.pop();
-
-                s2.push({node.first , 2});
-                
+            } 
+            // Only first tree reached inorder, the second one is still in preorder
+            else if(node1) {
+                pushInorder(s1);
+            } 
+            // Only second tree reached inorder, the first one is still in preorder
+            else if(node2) {
+                pushInorder(s2);
             }
         }
         
+        TreeNode* node = NULL;
+        
         while(!s1.empty()) {
-            pair <TreeNode* , int> node = s1.top();
-            s1.pop();
-
-            // Denotes preorder
-            if(node.second == 1) {
-                // Insert the current node for inorder
-                s1.push({node.first , 2});
-
-                // Insert the left child if it is present
-                if(node.first->left != NULL) s1.push({node.first->left , 1});  
-            }
-            // Denotes inorder
-            else if(node.second == 2) {
-                // Insert the current node for postorder
-                s1.push({node.first , 3});
-                
-                ans.push_back(node.first->val);
-
-                // Insert the right child it if is present
-                if(node.first->right != NULL) s1.push({node.first->right , 1});
-            }
+            performTraversal(s1 , true , node , ans);
         }
         
         while(!s2.empty()) {
-            pair <TreeNode* , int> node = s2.top();
-            s2.pop();
-
-            // Denotes preorder
-            if(node.second == 1) {
-                // Insert the current node for inorder
-                s2.push({node.first , 2});
-
-                // Insert the left child if it is present
-                if(node.first->left != NULL) s2.push({node.first->left , 1});  
-            }
-            // Denotes inorder
-            else if(node.second == 2) {
-                // Insert the current node for postorder
-                s2.push({node.first , 3});
-                
-                ans.push_back(node.first->val);
-
-                // Insert the right child it if is present
-                if(node.first->right != NULL) s2.push({node.first->right , 1});
-            }
+            performTraversal(s2 , true , node , ans);
         }
      
         return ans;
