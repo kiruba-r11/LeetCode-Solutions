@@ -56,6 +56,13 @@ public:
     
     vector<int> getAllElements(TreeNode* root1, TreeNode* root2) {
         
+        /*
+        
+        Iterative Stack Solution with O(n) time and O(n) (stack + resultant array) space complexity
+        Idea - Inorder gives elements in sorted order for a BST. So traverse and compare the inorder of both BST.
+        
+        */
+        
         vector <int> ans;
         
         stack <pair <TreeNode* , int>> s1 , s2;
