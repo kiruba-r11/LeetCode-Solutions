@@ -4,20 +4,17 @@ public:
         
         /*
         
-        O(N) time and space complexity
-        Idea -> Prefix Sum
+        O(N) time and O(1) space complexity (not including the resultant array)
+        Idea -> Prefix Sum 
          
         */
         
-        int n = nums.size() , ones = 0 , cur_ones = 0 , maxsum = -1 , cursum = -1;
-        vector <int> prefix(n , 0) , ans;
+        int n = nums.size() , ones = 0 , cur_ones = 0 , cur_zeroes = 0 , maxsum = -1 , cursum = -1;
+        vector <int> ans;
         
-        // Prefix array to store the sum of zeroes from 0 to ith index
         for(int i = 0; i < n; i++) {
             
-            if(i == 0) prefix[i] = 1 - nums[i];
-            else prefix[i] = prefix[i - 1] + (1 - nums[i]);
-            
+            // To count the no. of ones in the array
             ones += nums[i];
         }
         
@@ -30,11 +27,11 @@ public:
             } else if(i == n) {
                 
                 // Total zeroes
-                cursum = prefix[n - 1];
+                cursum = cur_zeroes;
             } else {
                 
                 // No. of ones from ith to (n - 1)ith is (total ones in the array - no. of ones from 0th to (i - 1)th)
-                cursum = prefix[i - 1] + abs(ones - cur_ones);
+                cursum = cur_zeroes + abs(ones - cur_ones);
             }
             
             if(cursum >= maxsum) {  
@@ -47,6 +44,10 @@ public:
             
             // Count ones from 0 to ith index
             if(i < n && nums[i] == 1) cur_ones++;
+            
+            // Count zeroes from 0 to ith index
+            if(i < n && nums[i] == 0) cur_zeroes++;
+            
             maxsum = max(maxsum , cursum);
         }
         
