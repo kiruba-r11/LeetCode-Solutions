@@ -22,7 +22,7 @@ public:
         /*
         
         O(N) time and O(1) space
-        Idea -> Rolling Hash, Reversed Robin Karp
+        Idea -> Rolling Hash, Reversed Rabin Karp
         
         For some string s = "abcd..."
         Hash[abcd...] = (a * p ^ 0 + b * p ^ 1 + c * p ^ 2 + d * p ^ 3 + ...) % mod
@@ -46,7 +46,7 @@ public:
         long long p = power , hash = 0 , subpow = fpow(p , k - 1 , modulo);
         int i = 0 , j = 0 , n = s.size() , start = -1 , end = -1;
         
-        // Reverse the string to apply reverse Robin Karp
+        // Reverse the string to apply reverse Rabin Karp
         reverse(s.begin() , s.end());
         
         while(j < n) {
