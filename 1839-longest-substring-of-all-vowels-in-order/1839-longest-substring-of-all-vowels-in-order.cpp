@@ -1,83 +1,46 @@
 class Solution {
 public:
     int longestBeautifulSubstring(string word) {
+        
+        /*
+        
+        O(N) time and O(1) space complexity
+        Idea -> Sliding Window (variable size - max window length is the solution)
+        
+        */
+        
         int i = 0 , j = 0 , n = word.size() , len = 0;
-        bool check = true;
+        bool check = true , contin = false;
+        
+        vector <char> vowels = {'a' , 'e' , 'i' , 'o' , 'u'};
         
         while(j < n) {
             
-            // cout << i << " " << j << endl;
+            contin = false;
             
-            check = false;
-            
-            // extend for all a's
-            while(j < n && word[j] == 'a') {
-                j++;
-                check = true;
+            for(int k = 0; k < 5; k++) {
+                
+                check = false;
+
+                // extend for all vowel's in alphabetical order
+                while(j < n && word[j] == vowels[k]) {
+                    j++;
+                    check = true;
+                }
+                
+                // If any vowel is missing, move to next index and start a new substring
+                if(!check) {
+                    if(k == 0)
+                        j++;
+                    i = j;
+                    contin = true;
+                    break;
+                }
             }
             
-            if(!check) {
-                j++;
-                i = j;
-                continue;
-            }
+            if(contin) continue;
             
-            check = false;
-            
-            // extend for all e's
-            while(j < n && word[j] == 'e') {
-                j++;
-                check = true;
-            }
-            
-            if(!check) {
-                i = j;
-                // j++;
-                continue;
-            }
-            
-            check = false;
-            
-            // extend for all i's
-            while(j < n && word[j] == 'i') {
-                j++;
-                check = true;
-            }
-            
-            if(!check) {
-                i = j;
-                // j++;
-                continue;
-            }
-            
-            check = false;
-            
-            // extend for all o's
-            while(j < n && word[j] == 'o') {
-                j++;
-                check = true;
-            }
-            
-            if(!check) {
-                i = j;
-                // j++;
-                continue;
-            }
-            
-            check = false;
-            
-            // extend for all u's
-            while(j < n && word[j] == 'u') {
-                j++;
-                check = true;
-            }
-            
-            if(!check) {
-                i = j;
-                // j++;
-                continue;
-            }
-            
+            // It reaches here, only if all vowels with alphabetically ordered substring is found
             len = max(len , j - i);
             i = j;
         }
