@@ -10,101 +10,67 @@
  */
 class Solution {
 public:
-    
-    /*
-    
-    [2,2,-2,1,-1,-1]
-    [2,4,2,3,2,1]
-    
-    */
-    
-    void deleteNodes(map <int , ListNode*> &hash , ListNode* head , ListNode* tail , ListNode* start , int sum) {
+    void deleteNodes(map <int , ListNode*> &hash , ListNode* start , ListNode* end , int sum) {
+        
+        // Start is the previous node to the node which we want to delete
+        // End is the node till which we have to delete
         
         ListNode* temp = start->next;
-        start->next = tail->next;
-        
-        // sum += temp->val;
+        start->next = end->next;
         
         while(temp != start->next) {
+            
+            // If this is the node that we are deleting than it has to be deleted in hash if its the first occurence in hash
+            
             sum += temp->val;
             
             if(hash[sum] == temp)
                 hash[sum] = NULL;
-            tail = temp->next;
-            // cout << temp->val << " ";
-            // delete temp;
-            temp = tail;
+            
+            end = temp->next;
+            temp = end;
         }
-        // cout << endl;
     }
     
     ListNode* removeZeroSumSublists(ListNode* head) {
         
-        while(head && head->val == 0) {
-            head = head->next;
-        }
+        /*
         
-        if(!head) return NULL;
+        O(N) time and space complexity
+        Idea -> Prefix sum hashing with sentinel node of Linked Lists
         
+        */
+        
+        // Using a sentinel node technique, always the best to solve Linked Lists problems to avoid NULL-Pointer Exceptions
+        ListNode* newHead = new ListNode(0);
+        newHead->next = head;
+       
+        // Hashing to find a zero sum sublist
         map <int , ListNode*> hash;
-        vector <int> prefix;
+        hash[0] = newHead;
         
-        int i = 0;
+        int sum = 0;
         
-        // Fill prefix sum and hash map
-        ListNode* temp = head , *tem = head;
+        ListNode* temp = head;
         
-        prefix.push_back(head->val);
-        hash[prefix[i]] = temp;
-        
-        temp = temp->next;
         while(temp) {
-            if(prefix.size())
-                prefix.push_back(prefix[prefix.size() - 1] + temp->val);
-            else
-                prefix.push_back(temp->val);
-            
-            // cout << prefix.size() << endl;
-            // i++;
-            // cout << prefix[i] << endl;
-                // cout << head->val << " " << temp->val << endl;
-            if(prefix[prefix.size() - 1] == 0) {
-                tem = head;
-                // cout << '1' << endl;
-                head = temp->next;
-                // cout << '2' << endl;
-                while(tem != head) {
-                    temp = tem->next;
-                    // cout << '3' << endl;
-                    // delete tem;
-                    // cout << '4' << endl;
-                    tem = temp;
-                    // cout << '5' << endl;
-                }
-                // cout << '6' << endl;
-                temp = head;
-                // cout << '7' << endl;
-                prefix.clear();
-                hash.clear();
-                
+            sum += temp->val;
+
+            if(hash[sum] == NULL) {
+                hash[sum] = temp;
             } else {
-                if(hash[prefix[prefix.size() - 1]] == NULL) {
-                    // cout <<prefix[prefix.size() - 1]<< endl;
-                    hash[prefix[prefix.size() - 1]] = temp;
-                }
-                else {
-                    ListNode* next = temp->next;
-                    deleteNodes(hash , head , temp , hash[prefix[prefix.size() - 1]] , prefix[prefix.size() - 1]);
-                    temp = next;
-                    continue;
-                }
-                temp = temp->next;
+                
+                // If this sum already exists, then the sum of sublists from that point which gave this sum to this point is zero
+                
+                ListNode* nextNode = temp->next;
+                deleteNodes(hash , hash[sum] , temp , sum);
+                temp = nextNode;
+                continue;
             }
             
+            temp = temp->next;
         }
         
-        // cout << '8' << endl;
-        
-        return head;
+        return newHead->next;
     }
 };
