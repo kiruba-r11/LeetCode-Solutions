@@ -63,6 +63,32 @@ public:
     
     int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
         
+        /*------------------------------------------------------------------------------------------------
+        
+        The problem has four solutions:
+        
+            1.  O(N ^ 3 * logN) time and O(1) space
+                Idea -> Binary Search
+                Result -> TLE
+            
+            2.  O(N ^ 3) time and O(N) space
+                Idea -> Element Hashing
+                Result -> TLE
+                
+            3.  O(N ^ 3) time O(1) space
+                Idea -> Two pointer (Two Sum)
+                Result -> TLE
+                
+            4.  O(N ^ 2) time and O(N) space
+                Idea -> Single Pair Sum Hashing
+                Result -> AC
+                
+            5.  O(N) time and O(N) space
+                Idea -> Double Pair Sum Hashing
+                Result -> AC
+        
+        ------------------------------------------------------------------------------------------------*/
+        
 //         /*
         
 //         O(N^3 * logN) time and O(1) space
