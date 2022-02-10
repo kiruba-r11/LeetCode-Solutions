@@ -2,6 +2,20 @@ class Solution {
 public:
     int subarraySum(vector<int>& nums, int k) {
         
+        /*
+        
+        O(N) time and space complexity
+        Idea -> Hashing 
+        
+        Let the array be [i0 , i1 , i2 , i3 , .... i(n-1)]
+        Here, if sum of elements from i0 to ia is X
+        Also, if sum of elements from i0 to ib is X+K
+        
+        Then, the sum of elements from i(a+1) to ib is K.
+        So, we just need to calculate prefix sum and store it in hash, and if the above condition satisfies, then increment the count
+        
+        */
+        
         int n = nums.size();
         unordered_map <int , int> hash;
         hash[0] = 1;
@@ -20,15 +34,6 @@ public:
     }
 };
 
-
-// [1,2,3,4,5,6,7,8,9]
-// ------x-
-// ---------x+k--
-
-
-// [1,1,1]     h[1] = 1
-
-// [1,-1,0]  [0->1 , ] cnt = 1(-1,1)
 
 
 
