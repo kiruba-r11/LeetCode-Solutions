@@ -83,7 +83,7 @@ public:
                 Idea -> Single Pair Sum Hashing
                 Result -> AC
                 
-            5.  O(N) time and O(N) space
+            5.  O(N ^ 2) time and O(N) space
                 Idea -> Double Pair Sum Hashing
                 Result -> AC
         
@@ -303,7 +303,7 @@ public:
         
 //         /*
         
-//         O(N) time and O(N) space
+//         O(N ^ 2) time and O(N) space
 //         Idea -> For pair sum in first and second array, find the count of pair sum in third and fourth array which gives the total sum of tuple as 0
         
 //         TC passed FINALLY! The MOST OPTIMAL SOLUTION POSSIBLE!
