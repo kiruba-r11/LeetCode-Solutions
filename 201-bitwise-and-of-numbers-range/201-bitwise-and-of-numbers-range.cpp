@@ -23,8 +23,6 @@ public:
             right /= 2;
         }
         
-        if(left == 0) return 0;
-        
         while(bits--) left *= 2;
         
         return left;
