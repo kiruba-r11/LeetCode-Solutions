@@ -16,18 +16,25 @@ public:
     
     int solve(int n) {
         
-        vector <int> dp(n + 1);
+//         vector <int> dp(n + 1);
         
-        dp[0] = 1;
+//         dp[0] = 1;
+        
+        int climbOne = 1 , climbTwo = 0 , cur = 0;
         
         for(int i = 1; i <= n; i++) {
-            int climbOne = dp[i - 1];
-            int climbTwo = i >= 2 ? dp[i - 2] : 0;
+//             int climbOne = dp[i - 1];
+//             int climbTwo = i >= 2 ? dp[i - 2] : 0;
             
-            dp[i] = climbOne + climbTwo;
+//             dp[i] = climbOne + climbTwo;
+            
+            cur = climbOne + climbTwo;
+            climbTwo = climbOne;
+            climbOne = cur;
         }
         
-        return dp[n];
+        // return dp[n];
+        return climbOne;
     }
     
     int climbStairs(int n) {
@@ -39,6 +46,9 @@ public:
             
         Tabulation:
             O(N) time and O(N) space complexity
+            
+        Space Optimization:
+            O(N) time and O(1) space complexity
         
         */
         
