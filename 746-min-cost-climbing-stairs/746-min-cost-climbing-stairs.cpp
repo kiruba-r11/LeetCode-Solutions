@@ -18,17 +18,27 @@ public:
         int n = cost.size();
         vector <int> dp(n);
         
+        int plusTwo = 0 , plusOne = 0 , cur = 0;
+        
         for(int i = n - 1; i >= 0; i--) {
             
             int climbOne = cost[i] , climbTwo = cost[i];
             
-            if(i + 1 < n) climbOne += dp[i + 1];
-            if(i + 2 < n) climbTwo += dp[i + 2];
+            // if(i + 1 < n) climbOne += dp[i + 1];
+            // if(i + 2 < n) climbTwo += dp[i + 2];
             
-            dp[i] = min(climbOne , climbTwo);
+            climbOne += plusOne;
+            climbTwo += plusTwo;
+            
+            // dp[i] = min(climbOne , climbTwo);
+            cur = min(climbOne , climbTwo);
+            
+            plusTwo = plusOne;
+            plusOne = cur;
         }
         
-        return min(dp[0] , dp[1]);
+        // return min(dp[0] , dp[1]);
+        return min(plusOne , plusTwo);
     }
     
     int minCostClimbingStairs(vector<int>& cost) {
@@ -40,6 +50,9 @@ public:
             
         Tabulation:
             O(N) time and O(N) space complexity
+            
+        Space Optimisation
+            O(N) time and O(1) space complexity
         
         */
         
