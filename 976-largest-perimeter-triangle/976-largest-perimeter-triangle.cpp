@@ -5,6 +5,10 @@ public:
         /*
         
         O(N) time and O(1) space complexity
+        Idea -> Triangle Property + Sorting
+        
+        We know for a triangle with sides a, b, c, it must satisfy (a + b > c)
+        Now, we just need to maximise the value of a + b and c to have maximum perimeter
         
         */
         
