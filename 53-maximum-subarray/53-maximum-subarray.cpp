@@ -4,26 +4,26 @@ public:
         
         /*
         
-        O(N) time and O(1) space
-        Idea -> Basic logics
+        O(N) time and O(1) space complexity
+        Idea -> Kadane's Algorithm
+        
+            At every index, decide whether to
+                1. Start a new subarray
+                2. Continue with the previous subarray
+                
+            The subarray with maxsum of the above step, is the new subarray with us.
+            Now, this new subarray can or cannot contribute to our overall result. Have a check on that.
         
         */
         
-        int cursum = 0 , maxsum = INT_MIN , maxelem = nums[0];
         int n = nums.size();
+        int curMax = nums[0] , finalMax = nums[0];
         
-        for(int i = 0; i < n; i++) {
-            cursum += nums[i];
-            
-            // If cursum is less than 0, taking it will effectively reduce the sum of subarray starting from next point.
-            if(cursum < 0) cursum = 0;
-            
-            maxelem = max(maxelem , nums[i]);
-            maxsum = max(maxsum , cursum);
+        for(int i = 1; i < n; i++) {
+            curMax = max(curMax + nums[i] , nums[i]);
+            finalMax = max(finalMax , curMax);
         }
         
-        if(maxsum == 0) maxsum = maxelem;
-        
-        return maxsum;
+        return finalMax;
     }
 };
