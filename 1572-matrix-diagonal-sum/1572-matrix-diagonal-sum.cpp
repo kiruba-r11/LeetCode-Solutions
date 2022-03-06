@@ -1,6 +1,13 @@
 class Solution {
 public:
     int diagonalSum(vector<vector<int>>& mat) {
+        
+        /*
+        
+        O(N ^ 2) time and O(1) space complexity
+        
+        */
+        
         int n = mat.size();
         int sum = 0;
         
