@@ -22,32 +22,52 @@ public:
         
         /*
         
-        O(N) time and space (queue) complexity
-        Idea -> BFS
+        O(N) time and O(1) space complexity
+        Idea -> Space Optimised BFS
+        
+            1. This approach works only if the tree is complete
+            2. Consider the tree (Intially):
+
+                                a-> NULL
+
+                        b               c-> NULL
+
+                    d       e        f       g->NULL
+            
+            3. Let cur = root, Now cur->left->next = cur->right (Making the left next point to right)
+            4. And if cur->next exists, Then cur->right->next = cur->left->next (Making the right next to point to left)
+            5. Then cur = cur->next (Moving to next node in the same level)
+            6. root = root->left , cur = root (Moving to next level)
+
+
+        
+        The intuition is that, because of the next pointer, we can travel to complete level. 
+        Ans since we also have a pointer to the start node of the level, we do not require a queue to perform BFS.
         
         */
         
         if(root == NULL) return NULL;
         
-        queue <Node*> q;
-        q.push(root);
-        q.push(NULL);
+        Node* tempRoot = root;
+        Node* cur;
         
-        while(!q.empty()) {
-            Node* node = q.front();
-            q.pop();
-            
-            if(node == NULL) {
-                if(!q.empty()) q.push(node);
-            } else {
-                
-                node->next = q.front();
-                
-                if(node->left) q.push(node->left);
-                if(node->right) q.push(node->right);                
+        while(tempRoot != NULL) {
+            cur = tempRoot;
+            while(cur != NULL) {
+                if(cur->left) cur->left->next = cur->right;
+                if(cur->left && cur->next) cur->right->next = cur->next->left;
+
+                // Moving to the next node of same level
+                cur = cur->next;
             }
+            // Moving to the start of next level
+            tempRoot = tempRoot->left;
         }
         
         return root;
     }
 };
+
+
+
+
