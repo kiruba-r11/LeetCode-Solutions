@@ -2,6 +2,13 @@ class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
         
+        /*
+        
+        O(N * M) time and space complexity
+        Idea -> Multisourced BFS
+        
+        */
+        
         int time = -1 , cnt = 0;
         int n = grid.size() , m = grid[0].size();
         
