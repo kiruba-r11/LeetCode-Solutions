@@ -23,6 +23,13 @@ public:
     }
     vector<int> sortByBits(vector<int>& arr) {
         
+        /*
+        
+        O(Nlog^2N) time and O(1) time complexity
+        Idea -> Simulation
+        
+        */
+        
         sort(arr.begin() , arr.end() , cmp);
         
         return arr;
