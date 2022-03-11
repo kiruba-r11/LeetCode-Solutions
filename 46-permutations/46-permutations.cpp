@@ -23,6 +23,13 @@ public:
     }
     vector<vector<int>> permute(vector<int>& nums) {
         
+        /*
+        
+        O(N!) time and O(N) space complexity
+        Idea -> Backtracking
+        
+        */
+        
         vector <int> cur;
         vector <vector <int>> ans;
         
