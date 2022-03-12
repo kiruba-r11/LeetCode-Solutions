@@ -13,6 +13,12 @@ class Solution {
 public:
     vector<int> preorderTraversal(TreeNode* root) {
         
+        /*
+        
+        O(N) time and space complexity
+        Idea -> Recursion or (stack + iteration)
+        
+        */
         
         vector <int> ans;
         if(root == NULL) return ans;
