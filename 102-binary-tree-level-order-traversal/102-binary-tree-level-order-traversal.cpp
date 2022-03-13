@@ -56,27 +56,55 @@ public:
         
         // Method 2
         // --------------------------------------------------------------------------
-        queue <TreeNode*> q;
-        q.push(root);
-        q.push(NULL);
+//         queue <TreeNode*> q;
+//         q.push(root);
+//         q.push(NULL);
+        
+//         vector <vector <int>> ans;
+//         vector <int> curLevel;
+        
+//         while(!q.empty()) {
+//             TreeNode* node = q.front();
+//             q.pop();
+            
+//             if(node == NULL) {
+//                 ans.push_back(curLevel);
+//                 curLevel = {};
+//                 if(!q.empty()) q.push(NULL);
+//             } else {
+//                 curLevel.push_back(node->val);
+                
+//                 if(node->left) q.push(node->left);
+//                 if(node->right) q.push(node->right);
+//             }
+//         }
+        
+//         return ans;
+        
+        // --------------------------------------------------------------------------
+        
+        // Method 3
+        // --------------------------------------------------------------------------
+        queue <TreeNode*> pq , cq;
+        pq.push(root);
         
         vector <vector <int>> ans;
-        vector <int> curLevel;
         
-        while(!q.empty()) {
-            TreeNode* node = q.front();
-            q.pop();
-            
-            if(node == NULL) {
-                ans.push_back(curLevel);
-                curLevel = {};
-                if(!q.empty()) q.push(NULL);
-            } else {
+        while(!pq.empty()) {
+            cq = pq;
+            pq = {};
+            vector <int> curLevel;
+            while(!cq.empty()) {
+                TreeNode* node = cq.front();
+                cq.pop();
+                
                 curLevel.push_back(node->val);
                 
-                if(node->left) q.push(node->left);
-                if(node->right) q.push(node->right);
+                if(node->left) pq.push(node->left);
+                if(node->right) pq.push(node->right);
             }
+            
+            ans.push_back(curLevel);
         }
         
         return ans;
