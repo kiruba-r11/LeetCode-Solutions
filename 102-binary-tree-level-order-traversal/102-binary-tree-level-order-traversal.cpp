@@ -28,31 +28,59 @@ public:
         
         // Method 1
         // --------------------------------------------------------------------------
+//         queue <TreeNode*> q;
+//         q.push(root);
+        
+//         vector <vector <int>> ans;
+        
+//         while(!q.empty()) {
+//             int count = q.size();
+//             vector <int> curLevel;
+            
+//             for(int it = 0; it < count; it++) {
+//                 TreeNode* node = q.front();
+//                 q.pop();
+                
+//                 curLevel.push_back(node->val);
+                
+//                 if(node->left) q.push(node->left);
+//                 if(node->right) q.push(node->right);
+//             }
+            
+//             ans.push_back(curLevel);
+//         }
+        
+//         return ans;
+            
+        // --------------------------------------------------------------------------
+        
+        // Method 2
+        // --------------------------------------------------------------------------
         queue <TreeNode*> q;
         q.push(root);
+        q.push(NULL);
         
         vector <vector <int>> ans;
+        vector <int> curLevel;
         
         while(!q.empty()) {
-            int count = q.size();
-            vector <int> curLevel;
+            TreeNode* node = q.front();
+            q.pop();
             
-            for(int it = 0; it < count; it++) {
-                TreeNode* node = q.front();
-                q.pop();
-                
+            if(node == NULL) {
+                ans.push_back(curLevel);
+                curLevel = {};
+                if(!q.empty()) q.push(NULL);
+            } else {
                 curLevel.push_back(node->val);
                 
                 if(node->left) q.push(node->left);
                 if(node->right) q.push(node->right);
             }
-            
-            ans.push_back(curLevel);
         }
         
         return ans;
-            
-        // --------------------------------------------------------------------------
         
+        // --------------------------------------------------------------------------
     }
 };
