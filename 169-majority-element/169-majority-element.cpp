@@ -1,15 +1,26 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        // Brute Force -> O(n) time and O(n) space
-        map <int , int> m;
-        for(int i = 0; i < nums.size(); i++) {
-            m[nums[i]]++;
+        
+        /*
+        
+        O(N) time and O(1) space complexity
+        Idea -> Boyer Moore's Voting Algorithm
+        
+        */
+        
+        int voter = nums[0] , count = 1 , n = nums.size();
+        for(int i = 1; i < n; i++) {
+            if(nums[i] == voter) count++;
+            else {
+                count--;
+                if(count < 0) {
+                    voter = nums[i];
+                    count = 1;
+                }
+            }
         }
-        for(auto it = m.begin(); it != m.end(); it++) {
-            if(it->second > nums.size() / 2)
-                return it->first;
-        }
-        return -1;
+        
+        return voter;
     }
 };
