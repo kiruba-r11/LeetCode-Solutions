@@ -10,19 +10,15 @@ public:
     }
     
     int pop() {
-        queue <int> temp;
-        while(q.size() > 1) {
-            temp.push(q.front());
+        int size = q.size();
+        while(size > 1) {
+            q.push(q.front());
             q.pop();
+            size--;
         }
         
         int elem = q.front();
         q.pop();
-        
-        while(!temp.empty()) {
-            q.push(temp.front());
-            temp.pop();
-        }
         
         return elem;
     }
