@@ -16,19 +16,22 @@ public:
     
     int solve(int n) {
         
-        vector <vector <int>> dp(n + 1 , vector <int> (6));
-        for(int i = 0; i <= 5; i++) dp[0][i] = 1;
+        // vector <vector <int>> dp(n + 1 , vector <int> (6));
+        // for(int i = 0; i <= 5; i++) dp[0][i] = 1;
+        
+        vector <int> cur(6 , 1) , prev(6 , 1);
         
         for(int i = 1; i <= n; i++) {
             for(int j = 1; j <= 5; j++) {
                 int ans = 0;
                 for(int k = j; k <= 5; k++) {
-                    ans += dp[i - 1][k];
+                    ans += prev[k];
                 }
-                dp[i][j] = ans;
+                cur[j] = ans;
             }
+            prev = cur;
         }
-        return dp[n][1];
+        return prev[1];
     }
     
     int countVowelStrings(int n) {
