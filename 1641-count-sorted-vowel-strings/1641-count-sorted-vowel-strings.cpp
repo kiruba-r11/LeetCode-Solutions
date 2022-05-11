@@ -13,8 +13,27 @@ public:
         
         return dp[n][prev] = ans;
     }
+    
+    int solve(int n) {
+        
+        vector <vector <int>> dp(n + 1 , vector <int> (6));
+        for(int i = 0; i <= 5; i++) dp[0][i] = 1;
+        
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= 5; j++) {
+                int ans = 0;
+                for(int k = j; k <= 5; k++) {
+                    ans += dp[i - 1][k];
+                }
+                dp[i][j] = ans;
+            }
+        }
+        return dp[n][1];
+    }
+    
     int countVowelStrings(int n) {
-        vector <vector <int>> dp(n + 1 , vector <int> (6 , -1));
-        return solve(n , 1 , dp);
+        // vector <vector <int>> dp(n + 1 , vector <int> (6 , -1));
+        // return solve(n , 1 , dp);
+        return solve(n);
     }
 };
