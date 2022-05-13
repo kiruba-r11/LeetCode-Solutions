@@ -30,18 +30,20 @@ public:
     
     int solve(vector <string> &words , int index , int select) {
     
-        if(words.size() == index) return 0;
+        if(words.size() + 1 == index) return 0;
         
-        if(dp[index][select + 1] != -1) return dp[index][select + 1];
+        if(dp[index][select] != -1) return dp[index][select];
         
         int pick = 0 , notPick = 0;
         notPick = solve(words , index + 1 , select);
 
-        if(select == -1 || isPredecessor(words[select] , words[index]))
+        if(select == 0 || isPredecessor(words[select - 1] , words[index - 1]))
             pick = 1 + solve(words , index + 1 , index);
         
-        return dp[index][select + 1] = max(pick , notPick);
+        return dp[index][select] = max(pick , notPick);
     }
+    
+
     
     int longestStrChain(vector<string>& words) {
         
@@ -54,6 +56,6 @@ public:
         }
         
         sort(words.begin() , words.end() , cmp);
-        return solve(words , 0 , -1);
+        return solve(words , 1 , 0);
     }
 };
