@@ -43,7 +43,23 @@ public:
         return dp[index][select] = max(pick , notPick);
     }
     
-
+    int solve(vector <string> &words) {
+        
+        int n = words.size();
+        
+        for(int i = n; i >= 1; i--) {
+            for(int j = 0; j <= i; j++) {
+                int notPick = dp[i + 1][j];
+                int pick = 0;
+                
+                if(j == 0 || isPredecessor(words[j - 1] , words[i - 1])) pick = 1 + dp[i + 1][i];
+                
+                dp[i][j] = max(pick , notPick);
+            }
+        }
+        
+        return dp[1][0];
+    }
     
     int longestStrChain(vector<string>& words) {
         
@@ -51,11 +67,11 @@ public:
         
         for(int i = 0; i <= 1001; i++) {
             for(int j = 0; j <= 1001; j++) {
-                dp[i][j] = -1;
+                dp[i][j] = 0;
             }
         }
         
         sort(words.begin() , words.end() , cmp);
-        return solve(words , 1 , 0);
+        return solve(words);
     }
 };
