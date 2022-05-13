@@ -20,28 +20,26 @@ public:
     int solve(vector <vector <int>> &pairs) {
         
         int n = pairs.size();
-        
-        vector <vector <int>> dp(n + 2 , vector <int> (n + 1));
+        vector <int> next(n + 1) , cur(n + 1);
         
         for(int i = n; i >= 1; i--) {
             for(int j = 0; j <= i; j++) {
                 int pick = 0 , notPick = 0;
                 
-                notPick = dp[i + 1][j];
-                if(j == 0 || pairs[j - 1][1] < pairs[i - 1][0]) pick = 1 + dp[i + 1][i];
+                notPick = next[j];
+                if(j == 0 || pairs[j - 1][1] < pairs[i - 1][0]) pick = 1 + next[i];
                 
-                dp[i][j] = max(pick , notPick);
+                cur[j] = max(pick , notPick);
             }
+            next = cur;
         }
         
-        return dp[1][0];
+        return next[0];
     }
     
     int findLongestChain(vector<vector<int>>& pairs) {
         sort(pairs.begin() , pairs.end());
-        // int n = pairs.size();
-        // vector <vector <int>> dp(n + 1 , vector <int> (n + 1 , -1));
-        // return solve(pairs , 1 , 0 , dp);
+        
         return solve(pairs);
     }
 };
