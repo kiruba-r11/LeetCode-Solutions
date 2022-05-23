@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int dp[600][101][101];
+    int dp[601][101][101];
     int solve(vector <pair <int , int>> &nums , int m , int n , int index) {
     
         if(index == nums.size()) return 0;
@@ -30,14 +30,23 @@ public:
             nums[i] = {zeroes , ones};
         }
         
-        for(int i = 0; i < 600; i++) {
-            for(int j = 0; j < 101; j++) {
-                for(int k = 0; k < 101; k++) {
-                    dp[i][j][k] = -1;
+        for(int i = size - 1; i >= 0; i--) {
+            for(int j = 0; j <= m; j++) {
+                for(int k = 0; k <= n; k++) {
+                    int notPick = -1e6 , pick = -1e6;
+
+                    notPick = dp[i + 1][j][k];
+
+                    if(nums[i].first <= j && nums[i].second <= k) {
+                        pick = 1 + dp[i + 1][j - nums[i].first][k - nums[i].second];
+                    }
+                    
+                    dp[i][j][k] = max(pick , notPick);
                 }
             }
         }
         
-        return solve(nums , m , n , 0);
+        return dp[0][m][n];
+        // return solve(nums , m , n , 0);
     }
 };
