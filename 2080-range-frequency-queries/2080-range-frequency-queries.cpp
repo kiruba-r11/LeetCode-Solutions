@@ -32,32 +32,18 @@ public:
         
         return ans;
     }
+    
     map <int , vector <int>> hash;
     RangeFreqQuery(vector<int>& arr) {
         int n = arr.size();
         for(int i = 0; i < n; i++) {
             hash[arr[i]].push_back(i);
         }
-        // for(int i = 0; i < n; i++) {
-        //     for(int j = 0; j < hash[arr[i]].size(); j++) cout << hash[arr[i]][j] << " ";
-        //     cout << endl;
-        // }
     }
-    int bs(vector <int> &arr , int key) {
-        int low = 0 , high = arr.size() - 1;
-        while(low <= high) {
-            int mid = low + (high - low) / 2;
-            if(arr[mid] == key) return mid;
-            if(arr[mid] > key) high = mid - 1;
-            else low = mid + 1;
-        }
-        return -1;
-    }
+    
     int query(int left, int right, int value) {
-        if(left == right) return (bs(hash[value] , right) != -1) ? 1 : 0;
         int l = hbs(hash[value] , left);
         int r = lbs(hash[value] , right);
-        // cout << l << "  " << r << endl;
         return (r - l + 1) ;
     }
 };
