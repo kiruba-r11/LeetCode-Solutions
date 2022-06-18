@@ -31,23 +31,18 @@ public:
         
         for(auto i: hash) {
             int num = 0;
-            // cout << "i : " << i.first << endl;
             for(auto j: pows) {
-                // cout << j << " ";
                 num = j - i.first;
                 if(num >= 0 && hash.find(num) != hash.end()) {
-                    // cout << i.first << " k " << j << endl;
                     if(num == i.first) {
                         ans += (i.second * 1L * (i.second - 1)) / 2;
-                        ans %= mod;
                     } else {
                         ans += i.second * 1L * hash[num];
-                        ans %= mod;
                     }
                 }
+                ans %= mod;
             }
             hash.erase(i.first);
-            // cout << endl;
         }
         
         return (int)ans;
