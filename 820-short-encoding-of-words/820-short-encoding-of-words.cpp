@@ -12,14 +12,12 @@ public:
         
         for(int i = 0; i < n; i++) {
             int cnt = 0;
+            int m1 = words[i].size();
+            int k1 , k2;
             for(int j = 0; j < n; j++) {
                 if(i != j) {
-                    // string word1 = words[i];
-                    // string word2 = words[j];
-                    // cout << word1 << " " << word2 << endl;
-                    int m1 = words[i].size();
+                    
                     int m2 = words[j].size();
-                    int k1 , k2;
                     bool check = true;
 
                     for(k1 = m1 - 1 , k2 = m2 - 1; k1 >= 0 && k2 >= 0; k1-- , k2--) {
@@ -30,7 +28,6 @@ public:
                     }
 
                     if(!check || k1 >= 0) {
-                        // cout << word1 << endl;
                         cnt++;
                     }
                 }
@@ -38,9 +35,7 @@ public:
             }
             if(cnt == n - 1) {
                 ans += words[i].size() + 1;
-                // cout << words[i] << endl;
             }
-            // cout << endl;
         }
         
         return ans;
