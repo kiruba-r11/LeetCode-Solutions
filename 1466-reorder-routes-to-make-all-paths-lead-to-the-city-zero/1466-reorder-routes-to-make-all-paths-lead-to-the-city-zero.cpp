@@ -7,23 +7,16 @@ public:
         visited[src] = true;
         for(int i = 0; i < graph[src].size(); i++) {
             int newSrc = graph[src][i];
-            
-            // if(!reach[newSrc]) {
-            //     ans++;
-            //     reach[newSrc] = true;
-            // } else {
-            //     reach[src] = true;
-            // }
 
-            if(reach[newSrc] && hash.find({src , newSrc}) == hash.end()) {
-                reach[src] = true;
-                // cout << src << " " << newSrc << endl;
-                ans++;
-            } else if(hash.find({src , newSrc}) != hash.end()) {
+            if(hash.find({src , newSrc}) == hash.end()) {
+                if(reach[newSrc]) {
+                    reach[src] = true;
+                    ans++;
+                }
+            } else {
                 reach[src] = true;
             }
-            
-            // solve(graph , newSrc , ans , reach , visited);
+        
             solve(graph , newSrc , ans , hash , visited , reach);
         }
         
@@ -45,14 +38,8 @@ public:
         }
         
         int ans = 0;
-        // for(int i = 0; i < m; i++) {
-            // if(visited[i] == false)
         solve(graph , 0 , ans , hash , visited , reach);
-        // }
         
         return ans;
     }
 };
-
-// 3 -> 2 -> 0 -> 1
-// 1 -> 2 -> 0
