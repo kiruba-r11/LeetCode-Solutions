@@ -7,13 +7,14 @@ public:
             
             int j = i;
             int hypen = 0 , punc = 0;
-            bool check = true;
+            bool check = true , enter = false;
             
             while(j < n && s[j] == ' ') {
                 j++;
             }
             
             while(j < n && s[j] != ' ') {
+                enter = true;
                 if(isdigit(s[j])) {
                     check = false;
                 } else if(s[j] == '-') {
@@ -38,13 +39,9 @@ public:
                 j++;
             }
             
-            while(j < n && s[j] == ' ') {
-                j++;
-            }
+            i = j;
             
-            i = j - 1;
-            
-            if(check) count++;
+            if(check && enter) count++;
         }
         
         return count;
