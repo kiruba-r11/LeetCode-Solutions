@@ -11,25 +11,18 @@
  */
 class Solution {
 public:
-    
-    void invert(TreeNode* root) {
-        
-        if(root == NULL) return;
-        
-        swap(root->left , root->right);
-        invert(root->left);
-        invert(root->right);
-    }
-    
     TreeNode* invertTree(TreeNode* root) {
+        if(!root) return root;
         
-        /*
+        TreeNode* left = root->left;
+        TreeNode* right = root->right;
         
-        O(N) time and space (recursion stack) complexity
+        root->right = left;
+        root->left = right;
         
-        */
+        invertTree(root->left);
+        invertTree(root->right);
         
-        invert(root);
         return root;
     }
 };
