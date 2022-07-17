@@ -11,43 +11,32 @@
  */
 class Solution {
 public:
+    
     vector<int> inorderTraversal(TreeNode* root) {
-        
-         /*
-        
-        O(N) time and space complexity
-        Idea -> Recursion or (stack + iteration)
-        
-        */
+        if(!root) return {};
         
         vector <int> ans;
-        if(root == NULL) return ans;
-        
         stack <pair <TreeNode* , int>> s;
+        
         s.push({root , 1});
         
         while(!s.empty()) {
-         
-            pair <TreeNode* , int> value = s.top();
+            TreeNode* node = s.top().first;
+            int val = s.top().second;
             s.pop();
             
-            TreeNode* node = value.first;
-            int state = value.second;
-            
-            if(state == 1) {
-                
-                s.push({node , 2});
+            if(val == 1) {
+                s.push({node , val + 1});
                 if(node->left) s.push({node->left , 1});
-                
-            } else if(state == 2) {
-                
+            } else if(val == 2) {
+                s.push({node , val + 1});
                 ans.push_back(node->val);
-                s.push({node , 3});
                 if(node->right) s.push({node->right , 1});
+            } else {
+                continue;
             }
         }
         
         return ans;
-        
     }
 };
