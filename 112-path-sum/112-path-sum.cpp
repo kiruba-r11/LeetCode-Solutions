@@ -11,28 +11,17 @@
  */
 class Solution {
 public:
-    bool solve(TreeNode* root , int targetSum , int currentSum) {
-    
-        if(root == NULL) return false;
-        
-        if(root->left == NULL && root->right == NULL) {
-            return targetSum == (currentSum + root->val);
-        }
-        
-        bool left = solve(root->left , targetSum , currentSum + root->val);
-        bool right = solve(root->right , targetSum , currentSum + root->val);
-        
-        return left || right;
-    }
-    
     bool hasPathSum(TreeNode* root, int targetSum) {
+        if(!root) return false;
+        if(!root->left && !root->right) return targetSum == root->val;
         
-        /*
+        bool left = hasPathSum(root->left , targetSum - root->val);
+        if(left) return true;
         
-        O(N) time and space (recursive stack) complexity
+        bool right = hasPathSum(root->right , targetSum - root->val);
+        if(right) return true;
         
-        */
+        return false;
         
-        return solve(root , targetSum , 0);
     }
 };
