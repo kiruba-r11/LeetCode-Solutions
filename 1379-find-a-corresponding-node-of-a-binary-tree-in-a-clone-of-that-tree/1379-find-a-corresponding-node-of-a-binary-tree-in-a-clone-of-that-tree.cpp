@@ -10,19 +10,20 @@
 
 class Solution {
 public:
-    TreeNode* solve(TreeNode* original , TreeNode* cloned , TreeNode* target) {
-    
+    TreeNode* solve(TreeNode* p , TreeNode* q , TreeNode* t) {
+        if(!p) return p;
+        if(p == t) return q;
         
-        if(original == NULL) return NULL;
-        if(original == target) return cloned;
+        TreeNode* left = solve(p->left , q->left , t);
+        if(left) return left;
         
-        TreeNode* left = solve(original->left , cloned->left , target);
-        if(left != NULL) return left;
-        TreeNode* right = solve(original->right , cloned->right , target);
-        return right;
+        TreeNode* right = solve(p->right , q->right , t);
+        if(right) return right;
+        
+        return NULL;
     }
     
-    TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) {
-        return solve(original , cloned , target);
+    TreeNode* getTargetCopy(TreeNode* p, TreeNode* q, TreeNode* t) {
+        return solve(p , q , t);
     }
 };
