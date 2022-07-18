@@ -10,46 +10,23 @@
  */
 class Solution {
 public:
-    ListNode* reverse(ListNode* head) {
-    
-        if(head == NULL || head->next == NULL) return head;
-        
-        ListNode* next = head->next;
-        head->next = NULL;
-        
-        ListNode* newHead = reverse(next);
-        next->next = head;
-        
-        return newHead;
-    }
-    
     ListNode* reverseList(ListNode* head) {
+        if(!head || !head->next) return head;
         
-        /*
+        ListNode* p = NULL;
+        ListNode* q = head;
+        ListNode* r = head->next;
         
-        Recursion : O(N) time and O(N) space complexity
-        Iteration : O(N) time and O(1) space complexity 
+        while(r) {
+            q->next = p;
+            p = q;
+            q = r;
+            r = r->next;
+        }
         
-        */
+        q->next = p;
+        head = q;
         
-//         if(head == NULL || head->next == NULL) return head;
-        
-//         ListNode* p = NULL;
-//         ListNode* q = head;
-//         ListNode* r = head->next;
-        
-//         while(r) {
-//             q->next = p;
-//             p = q;
-//             q = r;
-//             r = r->next;
-//         }
-        
-//         q->next = p;
-//         head = q;
-        
-//         return head;
-        
-        return reverse(head);
+        return head;
     }
 };
