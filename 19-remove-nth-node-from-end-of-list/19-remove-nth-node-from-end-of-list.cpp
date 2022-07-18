@@ -12,35 +12,38 @@ class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
         
-        /*
-        
-        O(N) time and O(1) space complexity
-        Idea -> Fast and Slow pointer with distance n
-        
-        */
-        
-        ListNode* fast = head;
-        ListNode* slow = NULL;
-        
-        while(n-- > 1) {
-            fast = fast->next;
-        }
-        
-        while(fast && fast->next) {
-            fast = fast->next;
+        if(n == 1) {
+            if(!head->next) return NULL;
             
-            if(!slow) slow = head;
-            else slow = slow->next;
+            ListNode* prev = NULL;
+            ListNode* temp = head;
+            while(head && head->next) {
+                prev = head;
+                head = head->next;
+            }
+            prev->next = NULL;
+            return temp;
         }
         
-        ListNode* temp = NULL;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* prev = NULL;
         
-        if(slow) temp = slow->next;
-        else temp = head;
+        while(n-- && fast) {
+            fast = fast->next;
+        }
         
-        if(slow) slow->next = temp->next;
-        else head = temp->next;
-        delete temp;
+        while(fast) {
+            fast = fast->next;
+            prev = slow;
+            slow = slow->next;
+        }
+        
+        if(prev == NULL) {
+            head = head->next;
+        } else {
+            prev->next = slow->next;
+        }
         
         return head;
     }
