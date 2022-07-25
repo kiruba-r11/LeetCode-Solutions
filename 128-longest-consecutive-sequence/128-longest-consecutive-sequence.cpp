@@ -1,21 +1,24 @@
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-        unordered_map <int , int> hash;
-        for(auto i: nums) hash[i]++;
+        
+        unordered_map <int , bool> hash1;
+        unordered_map <int , int> hash2;
+        for(auto i: nums) hash1[i] = true , hash2[i] = 1;
         
         int ans = 0;
+        
         for(auto i: nums) {
-            if(hash[i - 1] == 0) {
-                int start = 0;
-                int count = 0;
-                while(hash[i + start] != 0) {
-                    count++;
-                    start++;
-                }
-                ans = max(ans , count);
+            int j = i + 1;
+            int cnt = 1;
+            while(hash1[j] == true && hash2[j] == 1) {
+                cnt++;
+                j++;
             }
+            hash2[i] = hash2[j] + cnt;
+            ans = max(ans , hash2[i]);
         }
+        
         return ans;
     }
 };
