@@ -1,11 +1,12 @@
 class Solution {
 public:
-    vector <int> solve(vector <int> &nums) {
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        sort(nums.begin() , nums.end());
         
-        int n = nums.size() , maxi = 0;
-        
+        int n = nums.size();
         vector <int> dp(n , 1) , hash(n);
         
+        int idx = -1 , len = 1;
         for(int i = 0; i < n; i++) {
             hash[i] = i;
             for(int j = 0; j < i; j++) {
@@ -14,29 +15,22 @@ public:
                         dp[i] = dp[j] + 1;
                         hash[i] = j;
                     }
-                }
+                } 
             }
-            if(dp[maxi] < dp[i]) {  
-                maxi = i;
+            
+            if(dp[i] >= len) {
+                len = dp[i];
+                idx = i;
             }
         }
+        
         vector <int> ans;
-        
-        int prev = -1;
-        while(maxi != prev) {
-            ans.push_back(nums[maxi]);
-            prev = maxi;
-            maxi = hash[maxi];
+        while(idx != hash[idx]) {
+            ans.push_back(nums[idx]);
+            idx = hash[idx];
         }
+        if(idx == hash[idx]) ans.push_back(nums[idx]);
         reverse(ans.begin() , ans.end());
-        
         return ans;
-    }
-    
-    
-    vector<int> largestDivisibleSubset(vector<int>& nums) {
-        
-        sort(nums.begin() , nums.end());
-        return solve(nums);
     }
 };
