@@ -1,27 +1,29 @@
 class TimeMap {
 public:
-    map <pair <string , int> , string> hash;
+    map <string , vector <pair <int , string>>> hash;
     TimeMap() {
         
     }
     
     void set(string key, string value, int timestamp) {
-        hash[{key , timestamp}] = value;
+        hash[key].push_back({timestamp , value});
     }
     
     string get(string key, int timestamp) {
+        int n = hash[key].size();
         
-        int ans = -1 , high = timestamp;
-        while(high > 0) {
-            if(hash.find({key , high}) != hash.end()) {
-                ans = high;
-                break;
+        int low = 0 , high = n - 1;
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            if(hash[key][mid].first <= timestamp) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
-            high--;
         }
         
-        if(ans == -1) return "";
-        return hash[{key , ans}];
+        if(high < 0) return "";
+        return hash[key][high].second;
     }
 };
 
