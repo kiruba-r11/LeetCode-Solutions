@@ -15,11 +15,9 @@ public:
         int low = 0 , high = n - 1;
         while(low <= high) {
             int mid = low + (high - low) / 2;
-            if(hash[key][mid].first <= timestamp) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
+            if(hash[key][mid].first == timestamp) return hash[key][mid].second;
+            else if(hash[key][mid].first > timestamp) high = mid - 1;
+            else low = mid + 1;
         }
         
         if(high < 0) return "";
