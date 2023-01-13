@@ -43,11 +43,11 @@ public:
         vector <bool> visited(n);
         vector <int> ans(n);
         
-        for(int i = 0; i < n; i++) {
-            if(visited[i] == false) {
-                solve(graph , i , labels , ans , visited);
-            }
-        }
+        // for(int i = 0; i < n; i++) {
+            // if(visited[i] == false) {
+                solve(graph , 0 , labels , ans , visited);
+            // }
+        // }
         
         return ans;
     }
