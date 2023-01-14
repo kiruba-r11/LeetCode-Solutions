@@ -1,13 +1,9 @@
 class Solution {
 public:
     bool isPossible(string s , int idx , string src) {
-        // cout << "h" << endl;
         int i = 0;
-        // cout << "h1" << endl;
         int m = s.size();
-        // cout << "h2" << endl;
         int n = src.size();
-        // cout << "h3" << endl;
         while(i < n && idx < m) {
             if(s[idx] != src[i]) return false;
             i++;
@@ -44,13 +40,10 @@ public:
         }
         
         for(; i < n && j < vp.size(); i++) {
-            // cout << i << " " << j << endl;
             if(i < idx[j]) {
                 ans += s[i];
             } else if(i == idx[j]) {
-                // cout << "hi1" << endl;
                 bool check = isPossible(s , i , src[j]);
-                // cout << "hi" << endl;
                 if(check) {
                     ans += tar[j];
                     i += src[j].size() - 1;
@@ -59,7 +52,6 @@ public:
                 }
                 j++;
             }
-            // cout << ans <<" " << i << " " << j << endl;
         }
         
         while(i < n) {
