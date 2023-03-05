@@ -14,7 +14,6 @@ public:
     }
     
     int countWays(vector<vector<int>>& ranges) {
-        // stack <pair <int , int>> s;
         int cnt = 0;
         pair <int , int> s;
         int n = ranges.size();
@@ -27,17 +26,7 @@ public:
             } else {
                 s.second = max(s.second , ranges[i][1]);
             }
-            // if(s.empty() || s.top().second < ranges[i][0]) {
-            //     s.push({ranges[i][0] , ranges[i][1]});
-            // } else {
-            //     pair <int , int> tp = s.top();
-            //     s.pop();
-            //     tp.second = max(tp.second , ranges[i][1]);
-            //     s.push(tp);
-            // }
         }
-        
-        // int cnt = s.size();
 
         return fpow(2 , cnt , 1e9 + 7);
     }
