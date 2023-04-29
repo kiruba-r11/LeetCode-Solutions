@@ -5,13 +5,18 @@ public:
         vector <int> ans(n);
         map <int , int> hash;
         
+        int cnt = 0;
         for(int i = 0; i < n; i++) {
-            int cnt = 0;
+            hash[A[i]]++;
             hash[B[i]]++;
             
-            for(int j = 0; j <= i; j++) {
-                if(hash[A[j]] != 0) cnt++;
+            if(A[i] == B[i]) {
+                if(hash[A[i]] == 2 || hash[B[i]] == 2) cnt++;
+            } else {
+                if(hash[A[i]] == 2 && hash[B[i]] == 2) cnt += 2;
+                else if(hash[A[i]] == 2 || hash[B[i]] == 2) cnt++;
             }
+
             ans[i] = cnt;
         }
         
