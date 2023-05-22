@@ -2,7 +2,7 @@ class Solution {
 public:
     /*
     
-    Classical pattern -> Find the minimum out of all the maximum 
+    Classical pattern -> Find the minimum out of all the maximums 
     Approach          -> Binary Search on Answer
     
     Dilemma           -> Search space :
