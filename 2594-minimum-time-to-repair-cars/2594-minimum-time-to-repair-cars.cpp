@@ -1,5 +1,17 @@
 class Solution {
 public:
+    /*
+    
+    Classical pattern -> Find the minimum out of all the maximum 
+    Approach          -> Binary Search on Answer
+    
+    Dilemma           -> Search space :
+                            1. No. of cars
+                            2. Acceptable limit of answer (This is the solution)
+    
+    */
+    
+    
     bool solve(vector <int> &ranks , int cars , long long limit) {
         
         int n = ranks.size();
