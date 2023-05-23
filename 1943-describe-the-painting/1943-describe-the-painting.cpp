@@ -4,29 +4,15 @@ public:
         int n = segments.size();
         int m = 0;
         
-        for(int i = 0; i < n; i++) {
-            m = max(segments[i][1] , m);
-        }
+        for(int i = 0; i < n; i++) m = max(segments[i][1] , m);
         
         vector <pair <long long , int>> prefix(m + 1);
         for(int i = 0; i < n; i++) {
             prefix[segments[i][0]].first += segments[i][2];
             prefix[segments[i][1]].first -= segments[i][2];
             
-            // start -> 1
-            // end -> 2
-            // start + end -> 3
-            
-            if(prefix[segments[i][0]].second == 2)  
-                prefix[segments[i][0]].second = 3;
-            else if(prefix[segments[i][0]].second != 3)
-                prefix[segments[i][0]].second = 1;
-                
-            
-            if(prefix[segments[i][1]].second == 1)
-                prefix[segments[i][1]].second = 3;
-            else if(prefix[segments[i][1]].second != 3)
-                prefix[segments[i][1]].second = 2;
+            prefix[segments[i][0]].second = 1;
+            prefix[segments[i][1]].second = 1;
         }
         
         for(int i = 2; i <= m; i++) {
