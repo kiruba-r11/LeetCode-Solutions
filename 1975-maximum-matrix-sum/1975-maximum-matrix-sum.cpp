@@ -17,15 +17,9 @@ public:
                 ans += abs(matrix[i][j]);
             }
         }
-        
-        if(negcnt == n * n) {
-            if(negcnt & 1) ans += 2 * neg;    
-        } else {
-            if(negcnt & 1) {
-                if(zerocnt == 0) {
-                    ans -= 2 * min(abs(neg) , pos);
-                }
-            }
+
+        if((negcnt & 1) && zerocnt == 0) {
+            ans -= 2 * min(abs(neg) , pos);
         }
         
         return ans;
