@@ -21,11 +21,7 @@ public:
 //     }
     
     bool isValid(vector <vector <int>> &grid , int i , int j , int cnt , int n , int m) {
-        if((j + cnt - 1 < m) && (i + cnt - 1 < n)) {
-            if((grid[i][j] == 1) && (grid[i][j + cnt - 1] == 1) && 
-               (grid[i + cnt - 1][j] == 1) && (grid[i + cnt - 1][j + cnt - 1] == 1)) return true;
-            return false;
-        }
+        if((j + cnt - 1 < m) && (i + cnt - 1 < n)) return true;
         return false;
     }
     
