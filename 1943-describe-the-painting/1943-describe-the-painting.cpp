@@ -35,24 +35,14 @@ public:
         
         vector <vector <long long>> ans;
         int start = 1;
-//         for(int i = 1; i <= m; i++) {
-//             cout << prefix[i].first << " " << prefix[i].second << endl;
-//         }
-        for(int i = 1; i <= m; i++) {
-            if(prefix[i].first != 0) {
-                start = i;
-                break;
-            }
-        }
         
-        for(int i = start + 1; i <= m; i++) {
+        for(int i = 2; i <= m; i++) {
             if(prefix[i].second != 0) {
                 if(prefix[i - 1].first != 0)
                     ans.push_back({start , i , prefix[i - 1].first});
                 start = i;
             }
         }
-        // cout << endl;
         
         return ans;
     }
