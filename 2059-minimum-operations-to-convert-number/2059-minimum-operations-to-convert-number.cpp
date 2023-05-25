@@ -1,13 +1,22 @@
 class Solution {
 public:
-    bool isValid(int value , map <int , int> &hash) {
-        if(value >= 0 && value <= 1000 && hash[value] == 0) return true;
+    bool isValid(int value) {
+        if(value >= 0 && value <= 1000) return true;
         return false;
     }
     
-    bool range(int value) {
-        if(value < 0 || value > 1000) return true;
-        return false;
+    int helper(int value , queue <int> &q , map <int , int> &hash , int goal , int ans) {
+        
+        if(isValid(value)) {
+            if(hash[value] == 0) {
+                q.push(value);
+                hash[value]++;
+            }
+        } else {
+            if(value == goal) return ans + 1;
+        }
+        
+        return -1;
     }
     
     int minimumOperations(vector<int>& nums, int start, int goal) {
@@ -29,26 +38,14 @@ public:
                 if(node == goal) return ans;
                 
                 for(int i = 0; i < n; i++) {
-                    if(isValid(node + nums[i] , hash)) {
-                        q.push(node + nums[i]);
-                        hash[node + nums[i]]++;
-                    } else {
-                        if(range(node + nums[i])) if((node + nums[i]) == goal) return ans + 1;
-                    }
+                    int v1 = helper(node + nums[i] , q , hash , goal , ans);
+                    if(v1 != -1) return v1;
                     
-                    if(isValid(node - nums[i] , hash)) {
-                        q.push(node - nums[i]);
-                        hash[node - nums[i]]++;
-                    } else {
-                        if(range(node - nums[i])) if((node - nums[i]) == goal) return ans + 1;
-                    }
+                    int v2 = helper(node - nums[i] , q , hash , goal , ans);
+                    if(v2 != -1) return v2;
                     
-                    if(isValid(node ^ nums[i] , hash)) {
-                        q.push(node ^ nums[i]);
-                        hash[node ^ nums[i]]++;
-                    } else {
-                        if(range(node ^ nums[i])) if((node ^ nums[i]) == goal) return ans + 1;
-                    }
+                    int v3 = helper(node ^ nums[i] , q , hash , goal , ans);
+                    if(v3 != -1) return v3;
                 }
             }
             ans++;
