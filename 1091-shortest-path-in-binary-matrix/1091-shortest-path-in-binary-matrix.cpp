@@ -1,52 +1,46 @@
 class Solution {
 public:
-    
-    vector <pair <int , int>> dirs = {
-        {-1 , 0},
-        {1 , 0},
-        {0 , -1},
-        {0 , 1},
-        {-1 , -1},
-        {1 , -1},
-        {-1 , 1},
-        {1 , 1}
-    };
-    
-    int bfs(vector <vector <int>> &grid) {
-        
-        int n = grid.size();
-        if(grid[0][0] == 1 || grid[n - 1][n - 1] == 1) return -1;
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        int n = grid.size() , m = grid[0].size();
+        if(grid[0][0] == 1 || grid[n - 1][m - 1] == 1) return -1;
         
         queue <pair <int , int>> q;
         q.push({0 , 0});
-        grid[0][0] = 1;
+        int dist = 1;
         
-        int cost = 1;
+        vector <pair <int , int>> dirs = {
+            {1 , 0} , {-1 , 0} , {0 , 1} , {0 , -1} , 
+            {1 , 1} , {-1 , 1} , {1 , -1} , {-1 , -1}
+        };
+        
+        vector <vector <bool>> visited(n , vector <bool> (m));
+        visited[0][0] = true;
+        
         while(!q.empty()) {
-            int count = q.size();
-            for(int it = 0; it < count; it++) {
-                pair <int , int> node = q.front();
+            int cnt = q.size();
+            for(int it = 0; it < cnt; it++) {
+                int ci = q.front().first;
+                int cj = q.front().second;
+                
                 q.pop();
                 
-                if(node.first == n - 1 && node.second == n - 1) return cost;
+                if(ci == n - 1 && cj == m - 1) return dist;
                 
                 for(auto dir: dirs) {
-                    int ni = dir.first + node.first;
-                    int nj = dir.second + node.second;
+                    int ni = dir.first + ci;
+                    int nj = dir.second + cj;
                     
-                    if(ni >= 0 && ni < n && nj >= 0 && nj < n && grid[ni][nj] != 1) {
-                        grid[ni][nj] = 1;
-                        q.push({ni , nj});
+                    if(ni >= 0 && ni < n && nj >= 0 && nj < m) {
+                        if(!visited[ni][nj] && grid[ni][nj] == 0) {
+                            q.push({ni , nj});
+                            visited[ni][nj] = true;
+                        }
                     }
                 }
             }
-            cost++;
+            dist++;
         }
         
         return -1;
-    }
-    
-    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
-        return bfs(grid);
     }
 };
