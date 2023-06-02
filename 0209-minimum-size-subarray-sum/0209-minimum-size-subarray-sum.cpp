@@ -1,44 +1,23 @@
 class Solution {
 public:
-    bool slide(vector <int> &nums , int target , int k) {
-    
-        int n = nums.size();
-        int i = 0 , j = 0 , sum = 0;
-        
-        while(j < n) {
-            int window = j - i + 1;
-            if(window <= k) {
-                sum += nums[j];
-                
-                if(window == k) {
-                    if(sum >= target) return true;
-                }
-                
-                j++;
-            } else {
-                sum -= nums[i];
-                i++;
-            }
-        }
-        
-        return false;
-    }
-    
     int minSubArrayLen(int target, vector<int>& nums) {
         int n = nums.size();
-        int low = 0 , high = n , ans = 0;
+        int i = 0 , j = 0 , sum = 0 , ans = n + 1;
         
-        while(low <= high) {
-            int mid = low + (high - low) / 2;
-            bool check = slide(nums , target , mid);
-            if(check) {
-                ans = mid;
-                high = mid - 1;
+        while(j < n) {
+            int cur = nums[j];
+            if(cur + sum < target) {
+                sum += cur;
+                j++;
             } else {
-                low = mid + 1;
+                while((cur + sum) >= target) {
+                    sum -= nums[i];
+                    i++;
+                }
+                ans = min(ans , j - i + 2);
             }
         }
         
-        return ans;
+        return ans == (n + 1) ? 0 : ans;
     }
 };
