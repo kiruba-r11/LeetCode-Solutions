@@ -12,27 +12,11 @@ public:
         ListNode* ptr1 = headA;
         ListNode* ptr2 = headB;
         
-        bool f1 = true , s1 = true;
-        
-        while(true) {
-            
-            if(ptr1 == ptr2) return ptr1;
-            
-            ptr1 = ptr1->next;
-            ptr2 = ptr2->next;
-            
-            if(!ptr1) {
-                if(!f1) break;
-                ptr1 = headB;
-                f1 = false;
-            }
-            if(!ptr2) {
-                if(!s1) break;
-                ptr2 = headA;
-                s1 = false;
-            }
+        while(ptr1 != ptr2) {
+            ptr1 = ptr1 ? ptr1->next : headB;
+            ptr2 = ptr2 ? ptr2->next : headA;
         }
         
-        return NULL;
+        return ptr1;
     }
 };
