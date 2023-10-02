@@ -10,36 +10,31 @@
  */
 class Solution {
 public:
-    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+    ListNode* merge(ListNode* list1 , ListNode* list2) {
+    
+        if(!list1 && !list2) return NULL;
+        if(!list1) return list2;
+        if(!list2) return list1;
         
-        // Having a dummy head pointer removes the need of edges cases
         ListNode* head = new ListNode(-1);
-        ListNode* newHead = head;
+        ListNode* headptr = head;
         
-        while(list1 && list2) {
-            if(list1->val <= list2->val) {
-                head->next = list1;
-                list1 = list1->next;
-            } else {
-                head->next = list2;
-                list2 = list2->next;
-            }
-            
-            head = head->next;
-        }
-        
-        while(list1) {
+        ListNode* newHead = NULL;
+        if(list1->val < list2->val) {
             head->next = list1;
-            list1 = list1->next;
             head = head->next;
-        }
-        
-        while(list2) {
+            newHead = merge(list1->next , list2);
+        } else {
             head->next = list2;
-            list2 = list2->next;
             head = head->next;
+            newHead = merge(list1 , list2->next);
         }
         
-        return newHead->next;
+        head->next = newHead;
+        return headptr->next;
+    }
+    
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        return merge(list1 , list2);
     }
 };
