@@ -1,35 +1,35 @@
 class Solution {
 public:
-    void dfs(vector <vector <int>> &graph , vector <bool> &visited , int src , int dest , 
-             vector <int> &cur , vector <vector <int>> &ans) {
+    vector <vector <int>> ans;
+    
+    void solve(vector <vector <int>> &graph , vector <bool> &visited , int src , int dest , vector <int> &cur) {
         
-        if(visited[src] == true) return;
         if(src == dest) {
             cur.push_back(src);
             ans.push_back(cur);
             cur.pop_back();
+            
             return;
         }
         
-        visited[src] = true;
-        cur.push_back(src);
+        if(visited[src]) return;
         
-        for(auto i: graph[src]) {
-            dfs(graph , visited , i , dest , cur , ans);
+        for(auto adj: graph[src]) {
+            cur.push_back(src);
+            visited[src] = true;
+            solve(graph , visited , adj , dest , cur);
+            visited[src] = false;
+            cur.pop_back();
         }
         
-        visited[src] = false;
-        cur.pop_back();
+        
     }
+    
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
-        
         int n = graph.size();
-        
-        vector <vector <int>> ans;
+        vector <bool> visited(n);
         vector <int> cur;
-        vector <bool> visited(n , false);
-        
-        dfs(graph , visited , 0 , n - 1 , cur , ans);
+        solve(graph , visited , 0 , n - 1 , cur);
         
         return ans;
     }
