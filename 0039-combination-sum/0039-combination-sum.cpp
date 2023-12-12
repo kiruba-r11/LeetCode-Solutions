@@ -2,18 +2,18 @@ class Solution {
 public:
     vector <vector <int>> ans;
     
-    void solve(vector <int> &nums , vector <int> &cur , int target , int idx) {
+    void solve(vector <int> &nums , vector <int> &cur , int target , int i) {
         if(target == 0) {
             ans.push_back(cur);
             return;
         }
-        if(target < 0) return;
+        if(target < 0 || i == nums.size()) return;
         
-        for(int i = idx; i < nums.size(); i++) {
-            cur.push_back(nums[i]);
-            solve(nums , cur , target - nums[i] , i);
-            cur.pop_back();
-        }
+        solve(nums , cur , target , i + 1);
+        
+        cur.push_back(nums[i]);
+        if(target >= nums[i]) solve(nums , cur , target - nums[i] , i);
+        cur.pop_back();
     }
     
     vector<vector<int>> combinationSum(vector<int>& nums, int target) {
