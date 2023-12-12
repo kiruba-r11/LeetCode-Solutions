@@ -10,19 +10,16 @@
  */
 class Solution {
 public:
-    
-    ListNode* reverse(ListNode* head) {
-    
+    ListNode* solve(ListNode* head) {
         if(!head || !head->next) return head;
-    
-        ListNode* newHead = reverse(head->next);
+        ListNode* newHead = solve(head->next);
+        
         head->next->next = head;
         head->next = NULL;
-        
         return newHead;
     }
     
     ListNode* reverseList(ListNode* head) {
-        return reverse(head);
+        return solve(head);
     }
 };
