@@ -1,17 +1,21 @@
 class Solution {
 public:
     
-    bool partition(string &str , int i , string cur , int sum , int num) {
+    bool partition(string &str , int i , string &cur , int sum , int num) {
         
         if(i == str.size()) {
             if(to_string(sum + stoi(cur)) == to_string(num)) return true;
             return false;
         }
         
-        if(partition(str , i + 1 , cur + str[i] , sum , num)) return true;
+        cur.push_back(str[i]);
+        if(partition(str , i + 1 , cur , sum , num)) return true;
+        cur.pop_back();
+        
         string temp = "";
         temp.push_back(str[i]);
         if(partition(str , i + 1 , temp , sum + (cur.size() ? stoi(cur) : 0) , num)) return true;
+        temp = cur;
         
         return false;
     }
