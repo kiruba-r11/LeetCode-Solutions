@@ -10,45 +10,45 @@
  */
 class Solution {
 public:
-    void solve(ListNode* temp , ListNode* l1 , ListNode* l2 , int carry) {
-    
+    ListNode* add(ListNode* l1 , ListNode *l2 , int carry) {
         if(!l1 && !l2) {
             if(carry != 0) {
-                ListNode* newnode = new ListNode(carry);
-                temp->next = newnode;
+                ListNode* newNode = new ListNode(carry);
+                return newNode;
             }
-        } else if(!l1) {
-            int sum = l2->val + carry;
-            carry = sum / 10;
-            sum = sum % 10;
-            
-            l2->val = sum;
-            temp->next = l2;
-            solve(temp->next, l1 , l2->next , carry);
-        } else if(!l2) {
-            int sum = l1->val + carry;
-            carry = sum / 10;
-            sum = sum % 10;
-            
-            l1->val = sum;
-            temp->next = l1;
-            solve(temp->next, l1->next , l2 , carry);
-        } else {
-            int sum = l1->val + l2->val + carry;
-            carry = sum / 10;
-            sum = sum % 10;
-
-            l1->val = sum;
-            temp->next = l1;
-            solve(temp->next , l1->next , l2->next , carry);
+            return NULL;
         }
-    }
-    
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        ListNode* newHead = new ListNode(-1);
-        ListNode* head = newHead;
         
-        solve(head , l1 , l2 , 0);
-        return newHead->next;
+        if(!l1) {
+            int sum = l2->val + carry;
+            int carry_ = sum / 10;
+            
+            sum = sum % 10;
+            l2->val = sum;
+            l2->next = add(l1 , l2->next , carry_);
+            return l2;
+        }
+        
+        if(!l2) {
+            int sum = l1->val + carry;
+            int carry_ = sum / 10;
+            
+            sum = sum % 10;
+            l1->val = sum;
+            l1->next = add(l1->next , l2 , carry_);
+            return l1;
+        }
+        
+        int sum = l1->val + l2->val + carry;
+        int carry_ = sum / 10;
+        
+        sum = sum % 10;
+        l1->val = sum;
+        l1->next = add(l1->next , l2->next , carry_);
+        
+        return l1;
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        return add(l1 , l2 , 0);
     }
 };
