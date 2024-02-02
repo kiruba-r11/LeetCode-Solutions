@@ -1,32 +1,26 @@
 class Solution {
 public:
-    string rev(string s) {
-    
-        int st = 0 , e = s.size() - 1;
-        while(st < e) {
-            swap(s[st++] , s[e--]);
-        }
+    char findBit(int n , int k , int n1) {
+        if(n == 1) return '0';
         
-        return s;
+        int mid = n1 / 2;
+        
+        if(k == mid) return '1';
+        if(k < mid) return findBit(n - 1 , k , n1 / 2);
+        
+        if(findBit(n - 1 , 2 * mid - k , n1 / 2) == '1') return '0';
+        return '1';
     }
     
-    string inv(string s) {
-        
-        int n = s.size();
-        for(int i = 0; i < n; i++) {
-            if(s[i] == '1') s[i] = '0';
-            else s[i] = '1';
-        }
-        
-        return s;
-    }
-    
-    string solve(int n) {
-        if(n == 1) return "0";
-        string ans = solve(n - 1) + "1" + rev(inv(solve(n - 1)));
+    int fpow(int b , int p) {
+        if(p == 0) return 1;
+        int ans = fpow(b * 1L * b , p / 2);
+        if(p & 1) return b * ans;
         return ans;
     }
+    
     char findKthBit(int n, int k) {
-        return solve(n)[k - 1];
+        int n1 = fpow(2 , n);
+        return findBit(n , k , n1);
     }
 };
