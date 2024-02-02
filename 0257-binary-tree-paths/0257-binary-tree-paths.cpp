@@ -11,9 +11,7 @@
  */
 class Solution {
 public:
-    vector <string> ans;
-    
-    void solve(TreeNode* root , string &cur) {
+    void paths(TreeNode* root , string &cur , vector <string> &ans) {
         if(!root) return;
         if(!root->left && !root->right) {
             ans.push_back(cur + to_string(root->val));
@@ -22,14 +20,15 @@ public:
         
         string temp = cur;
         cur += to_string(root->val) + "->";
-        solve(root->left , cur);
-        solve(root->right , cur);
+        paths(root->left , cur , ans);
+        paths(root->right , cur , ans);
         cur = temp;
+        
     }
-    
     vector<string> binaryTreePaths(TreeNode* root) {
+        vector <string> ans;
         string cur = "";
-        solve(root , cur);
+        paths(root , cur , ans);
         return ans;
     }
 };
