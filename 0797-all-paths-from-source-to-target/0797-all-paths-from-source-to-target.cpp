@@ -10,14 +10,14 @@ public:
             return;
         }
     
-        visited[src] = true;
+        // visited[src] = true;
         cur_path.push_back(src);
         
         for(auto adj: graph[src]) {
             findPath(graph , visited , adj , cur_path , total_path);
         }
         
-        visited[src] = false;
+        // visited[src] = false;
         cur_path.pop_back();
         
     }
