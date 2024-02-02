@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void findPath(vector <vector <int>> &graph , vector <bool> &visited , int src , vector <int> &cur_path , 
+    void findPath(vector <vector <int>> &graph , int src , vector <int> &cur_path , 
                   vector <vector <int>> &total_path) {
         
         if(src == graph.size() - 1) {
@@ -10,14 +10,12 @@ public:
             return;
         }
     
-        // visited[src] = true;
         cur_path.push_back(src);
         
         for(auto adj: graph[src]) {
-            findPath(graph , visited , adj , cur_path , total_path);
+            findPath(graph , adj , cur_path , total_path);
         }
         
-        // visited[src] = false;
         cur_path.pop_back();
         
     }
@@ -26,9 +24,8 @@ public:
         int n = graph.size();
         vector <vector <int>> total_path;
         vector <int> cur_path;
-        vector <bool> visited(n);
         
-        findPath(graph , visited , 0 , cur_path , total_path);
+        findPath(graph , 0 , cur_path , total_path);
         
         return total_path;
     }
