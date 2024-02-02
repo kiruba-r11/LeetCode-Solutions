@@ -1,37 +1,33 @@
 class Solution {
 public:
     string ans = "";
-    bool solve(int n , string &cur , map <string , int> &hash) {
-    
+    bool findBinary(string &cur , int n , unordered_map <string , int> &cache) {
+        
         if(n == 0) {
-            if(hash[cur] == 0) {
+            if(cache[cur] == 0) {
                 ans = cur;
                 return true;
             }
             return false;
         }
         
-        cur += "0";
-        if(solve(n - 1 , cur , hash)) return true;
+        cur.push_back('0');
+        if(findBinary(cur , n - 1 , cache)) return true;
         cur.pop_back();
-        
-        cur += "1";
-        if(solve(n - 1 , cur , hash)) return true;
+
+        cur.push_back('1');
+        if(findBinary(cur , n - 1 , cache)) return true;
         cur.pop_back();
-        
+
         return false;
     }
-    
     string findDifferentBinaryString(vector<string>& nums) {
-        map <string , int> hash;
-        for(auto i: nums) {
-            hash[i]++;
-        }
         
-        int n = nums[0].size();
+        unordered_map <string , int> cache;
+        for(auto i: nums) cache[i]++;
+        
         string cur = "";
-        solve(n , cur , hash);
-        
+        findBinary(cur , nums.size() , cache);
         return ans;
     }
 };
