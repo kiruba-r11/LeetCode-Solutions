@@ -1,29 +1,34 @@
 class Solution {
 public:
-    vector <vector <int>> ans;
-    void solve(vector <int> &nums , vector <int> &cur) {
+    void permutation(vector <int> &nums , vector <int> &cur , vector <vector <int>> &ans) {
         
-        if(cur.size() == nums.size()) {
+        if(nums.size() == cur.size()) {
             ans.push_back(cur);
             return;
         }
         
-        for(int i = 0; i < nums.size(); i++) {
+        int n = nums.size();
+        for(int i = 0; i < n; i++) {
             if(nums[i] != -11) {
+                
+                // make effort
                 int temp = nums[i];
                 nums[i] = -11;
-
                 cur.push_back(temp);
-                solve(nums , cur);
+                
+                permutation(nums , cur , ans);
+                
+                // undo effort
                 cur.pop_back();
-
                 nums[i] = temp;
             }
         }
     }
+    
     vector<vector<int>> permute(vector<int>& nums) {
+        vector <vector <int>> ans;
         vector <int> cur;
-        solve(nums , cur);
-        return ans;
+        permutation(nums , cur , ans);
+        return ans;    
     }
 };
