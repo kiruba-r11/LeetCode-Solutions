@@ -1,27 +1,29 @@
 class Solution {
 public:
-    vector <string> ans;
-    void solve(int n , string &cur , int open) {
-    
+    void generate(int n , int open , string &cur , vector <string> &ans) {
+        
         if(open < 0) return;
         if(n == 0) {
-            if(open == 0) ans.push_back(cur);
+            if(open != 0) return;
+            ans.push_back(cur);
             return;
         }
         
+        // open
         cur += "(";
-        solve(n - 1 , cur , open + 1);
+        generate(n - 1 , open + 1 , cur , ans);
         cur.pop_back();
         
+        // close
         cur += ")";
-        solve(n - 1 , cur , open - 1);
+        generate(n - 1 , open - 1 , cur , ans);
         cur.pop_back();
         
     }
-    
     vector<string> generateParenthesis(int n) {
         string cur = "";
-        solve(2 * n , cur , 0);
+        vector <string> ans;
+        generate(2 * n , 0 , cur , ans);
         return ans;
     }
 };
