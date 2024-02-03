@@ -1,16 +1,17 @@
 class Solution {
 public:
-    void happyString(int n , string &cur , vector <string> &ans) {
+    void happyString(int n , string &cur , int &k , string &ans) {
         
         if(n == 0) {
-            ans.push_back(cur);
+            k--;
+            if(k == 0) ans = cur;
             return;
         }
     
         for(int i = 'a'; i <= 'c'; i++) {
             if(cur.size() == 0 || cur.back() != i) {
                 cur.push_back(i);
-                happyString(n - 1 , cur , ans);
+                happyString(n - 1 , cur , k , ans);
                 cur.pop_back();
             }
         }
@@ -18,11 +19,11 @@ public:
     }
     
     string getHappyString(int n, int k) {
-        vector <string> ans;
+        string ans = "";
         string cur = "";
         
-        happyString(n , cur , ans);
+        happyString(n , cur , k , ans);
         
-        return ans.size() < k ? "" : ans[k - 1];
+        return ans;
     }
 };
