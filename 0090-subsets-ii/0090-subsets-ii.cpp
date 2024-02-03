@@ -1,30 +1,26 @@
 class Solution {
 public:
-    set <vector <int>> s;
     vector <vector <int>> ans;
-    
-    void solve(vector <int> &nums , int idx , vector <int> &cur) {
-        
-        if(idx == nums.size()) {
-            if(s.count(cur) == 0) {
-                ans.push_back(cur);
-                s.insert(cur);
-            }
+    void subsets(vector <int> &nums , int i , bool pick , vector <int> &cur) {
+        if(i == nums.size()) {
+            ans.push_back(cur);
             return;
         }
         
-        solve(nums , idx + 1 , cur);
+        subsets(nums , i + 1 , false , cur);
         
-        cur.push_back(nums[idx]);
-        solve(nums , idx + 1 , cur);
-        cur.pop_back();
+        if((i == 0) || (pick) || (!pick && nums[i] != nums[i - 1])) {
+            cur.push_back(nums[i]);
+            subsets(nums , i + 1 , true , cur);
+            cur.pop_back();
+        }
         
     }
-    
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         vector <int> cur;
         sort(nums.begin() , nums.end());
-        solve(nums , 0 , cur);
+        subsets(nums , 0 , false , cur);
         return ans;
     }
 };
+
