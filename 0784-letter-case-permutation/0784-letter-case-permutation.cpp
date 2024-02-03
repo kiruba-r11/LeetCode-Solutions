@@ -1,30 +1,34 @@
 class Solution {
 public:
-    vector <string> ans;
-    void solve(string &s , int i) {
+    void letterCase(string &s , int i , string &cur , vector <string> &ans) {
         
-        if(i == s.size()) {
-            ans.push_back(s);
+        if(s.size() == i) {
+            ans.push_back(cur);
             return;
         }
         
         if(isdigit(s[i])) {
-            solve(s , i + 1);
+            cur += s[i];
+            letterCase(s , i + 1 , cur , ans);
+            cur.pop_back();
         } else {
-            solve(s , i + 1);
-            char temp = s[i];
             
-            if(islower(temp)) s[i] = toupper(temp);
-            else s[i] = tolower(temp);
+            cur += tolower(s[i]);
+            letterCase(s , i + 1 , cur , ans);
+            cur.pop_back();
             
-            solve(s , i + 1);
-            
-            s[i] = temp;
+            cur += toupper(s[i]);
+            letterCase(s , i + 1 , cur , ans);
+            cur.pop_back();
         }
+
     }
     
     vector<string> letterCasePermutation(string s) {
-        solve(s , 0);
+        vector <string> ans;
+        string cur = "";
+        
+        letterCase(s , 0 , cur , ans);
         return ans;
     }
 };
