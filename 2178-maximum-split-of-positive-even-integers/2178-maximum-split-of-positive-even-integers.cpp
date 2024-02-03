@@ -1,26 +1,23 @@
 class Solution {
 public:
     vector<long long> maximumEvenSplit(long long finalSum) {
+        if(finalSum & 1) return {};
+        long long start = 2;
+        
         vector <long long> ans;
-        
-        if(finalSum & 1) return ans;
-        
-        long long num = 2 , curSum = 0;
-        while(finalSum > 0) {
-            ans.push_back(num);
-            finalSum -= num;
-            curSum += num;
-            num += 2;
+        while(finalSum >= start) {
+            ans.push_back(start);
+            finalSum -= start;
+            start += 2;
         }
         
-        if(finalSum == 0) return ans;
-        curSum -= ans.back();
-        finalSum += ans.back();
-        ans.pop_back();
-        ans[ans.size() - 1] += finalSum;
+        if(finalSum != 0) {
+            long long last = ans.back();
+            ans.pop_back();
+            last += finalSum;
+            ans.push_back(last);
+        }
+        
         return ans;
     }
 };
-
-
-    
