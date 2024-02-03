@@ -1,55 +1,43 @@
 class Solution {
 public:
-    
-    void find_optimal_score(vector <vector <int>> &students , vector <vector <int>> &mentors , int index , vector <bool> &taken , int cur_score , int &optimal_score) {
+    int score(vector <int> &students , vector <int> &mentors) {
+        int cnt = 0;
+        for(int i = 0; i < students.size(); i++) {
+            if(students[i] == mentors[i]) cnt++;
+        }
         
-        // If all students have been paired with their mentors, find the optimal pairing score
-        if(index == students.size()) {
-            optimal_score = max(optimal_score , cur_score);
+        return cnt;
+    }
+    
+    int ans = 0;
+    void maxSum(vector <vector <int>> &students , int idx , vector <vector <int>> &mentors , vector <int> &taken , int &cur) {
+        
+        if(idx == students.size()) {
+            ans = max(ans , cur);
             return;
         }
         
         for(int i = 0; i < mentors.size(); i++) {
-            
-            // For a current student, find to pair with mentors who are available and are not paired with other students
             if(taken[i] == false) {
-                
-                int curscore = 0;
-                
-                // Calculate the compatibility score
-                for(int j = 0; j < mentors[i].size(); j++) {
-                    if(students[index][j] == mentors[i][j]) curscore++;
-                }
-                
-                // The mentor is not paired, so he/she can't be paired with other student
                 taken[i] = true;
+                int match = score(students[idx] , mentors[i]);
+                cur += match;
                 
-                // Explore for all other possiblities
-                find_optimal_score(students , mentors , index + 1 , taken , cur_score + curscore , optimal_score);
+                maxSum(students , idx + 1 , mentors , taken , cur);
                 
-                // Backtrack, and make this mentor free so that he/she can now pair with other students.
-                // This is done, to find all possible pairings, and calculate the optimal score.
+                cur -= match;
                 taken[i] = false;
-                
             }
         }
         
-    }
+    } 
     
     int maxCompatibilitySum(vector<vector<int>>& students, vector<vector<int>>& mentors) {
+        int n = mentors.size();
+        vector <int> taken(n);
+        int cur = 0;
         
-        /*
-        
-        O(N! * M) time and O(N) space complexity
-        Idea -> Backtracking
-        
-        */
-        
-        int index = 0 , cur_score = 0 , optimal_score = 0 , n = students.size();
-        vector <bool> taken(n);
-        
-        find_optimal_score(students , mentors , index , taken , cur_score , optimal_score);
-        
-        return optimal_score;
+        maxSum(students , 0 , mentors , taken , cur);
+        return ans;
     }
 };
