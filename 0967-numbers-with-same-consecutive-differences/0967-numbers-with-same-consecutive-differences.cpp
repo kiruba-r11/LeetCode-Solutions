@@ -1,42 +1,36 @@
 class Solution {
 public:
     vector <int> ans;
-    void solve(int n , int k , int &cur , int last) {
+    void sameDiff(string &cur , int n , int k) {
         
         if(n == 0) {
-            ans.push_back(cur);
+            ans.push_back(stoi(cur));
             return;
         }
         
-        int add = last + k;
-        int sub = last - k;
-        int temp = cur;
+        int back = cur.back() - '0';
         
-        if(add == sub) {
-            cur = cur * 10 + add;
-            solve(n - 1 , k , cur , add);
-            cur = temp;
-        } else {
-            if(add <= 9) {
-                cur = cur * 10 + add;
-                solve(n - 1 , k , cur , add);
-                cur = temp;
-            }
-
-            if(sub >= 0) {
-                cur = cur * 10 + sub;
-                solve(n - 1 , k , cur , sub);
-                cur = temp;
+        if(k + back < 10) {
+            cur.push_back((k + back) + '0');
+            sameDiff(cur , n - 1 , k);
+            cur.pop_back();
+        }
+        if(back - k >= 0) {
+            if(k + back != back - k) {
+                cur.push_back((back - k) + '0');
+                sameDiff(cur , n - 1 , k);
+                cur.pop_back();
             }
         }
-        
     }
     
     vector<int> numsSameConsecDiff(int n, int k) {
-        for(int i = 1; i <= 9; i++) {
-            solve(n - 1 , k , i , i);
+        string cur = "";
+        for(int i = '1'; i <= '9'; i++) {
+            cur.push_back(i);
+            sameDiff(cur , n - 1 , k);
+            cur.pop_back();
         }
-        
         return ans;
     }
 };
