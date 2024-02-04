@@ -10,22 +10,16 @@
  */
 class Solution {
 public:
-    
     ListNode* reverse(ListNode* head) {
         if(!head || !head->next) return head;
-        
         ListNode* newHead = reverse(head->next);
+        
         head->next->next = head;
         head->next = NULL;
         
         return newHead;
     }
-    
     bool isPalindrome(ListNode* head) {
-        
-        if(!head || !head->next) return true;
-        
-        // Go to first middle element
         ListNode* slow = head;
         ListNode* fast = head->next;
         
@@ -38,14 +32,9 @@ public:
         }
         
         ListNode* newHead = slow->next;
-        
-        // Split into two lists
         slow->next = NULL;
         
-        // Reverse second list
         newHead = reverse(newHead);
-        
-        // Compare first and second list
         while(head && newHead) {
             if(head->val != newHead->val) return false;
             head = head->next;
