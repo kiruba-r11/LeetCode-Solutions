@@ -35,7 +35,3 @@ public:
         return res;
     }
 };
-
-// n - base -> 1 base 
-// m - toppings -> any toppings
-// for any toppings -> should be less than or equal to 2
