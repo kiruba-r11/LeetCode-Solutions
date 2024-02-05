@@ -21,32 +21,31 @@
  */
 class Solution {
 public:
-    TreeNode* solve(ListNode* &input , int low , int high) {
-        if(low > high) return NULL;
-        int mid = low + (high - low) / 2;
+    TreeNode* tree(ListNode* head) {
+        if(!head) return NULL;
+        if(!head->next) return new TreeNode(head->val);
+        ListNode* prev = NULL;
+        ListNode* slow = head;
+        ListNode* fast = head;
         
-        TreeNode* leftSub = solve(input , low , mid - 1);
-        TreeNode* root = new TreeNode(input->val);
-        input = input->next;
-        root->left = leftSub;
-        TreeNode* rightSub = solve(input , mid + 1 , high);
-        root->right = rightSub;
+        while(fast) {
+            fast = fast->next;
+            if(fast) {
+                prev = slow;
+                slow = slow->next;
+                fast = fast->next;
+            }
+        }
+        
+        TreeNode* root = new TreeNode(slow->val);
+        prev->next = NULL;
+        fast = slow->next;
+        slow->next = NULL;
+        root->left = tree(head);
+        root->right = tree(fast);
         return root;
     }
     TreeNode* sortedListToBST(ListNode* head) {
-        if(head == NULL) return NULL;
-        int len = 0;
-        
-        ListNode* temp = head;
-        while(temp) {
-            len++;
-            temp = temp->next;
-        }
-        return solve(head , 0 , len - 1);
+        return tree(head);
     }
 };
-
-
-
-
-
