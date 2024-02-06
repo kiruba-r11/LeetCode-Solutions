@@ -11,20 +11,18 @@
  */
 class Solution {
 public:
-    void solve(TreeNode* root , int &ans , int cur) {
-        if(!root) return;
+    int sum = 0;
+    void sumpath(TreeNode* root , int num) {
+        if(!root) return ;
         if(!root->left && !root->right) {
-            cur = cur * 2 + root->val;
-            ans += cur;
+            sum += num * 2 + root->val;
             return ;
         }
-        
-        solve(root->left , ans , cur * 2 + root->val);
-        solve(root->right , ans , cur * 2 + root->val);
+        sumpath(root->left , num * 2 + root->val);
+        sumpath(root->right , num * 2 + root->val);
     }
     int sumRootToLeaf(TreeNode* root) {
-        int ans = 0 , cur = 0;
-        solve(root , ans , cur);
-        return ans;
+        sumpath(root , 0);
+        return sum;
     }
 };
