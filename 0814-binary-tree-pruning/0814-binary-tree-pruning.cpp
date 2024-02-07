@@ -42,9 +42,7 @@ public:
     }
     TreeNode* pruneTree(TreeNode* root) {
         pair <int , int> ans = prune(root);
-        if(root->val == 0) {
-            if(ans.first == ans.second) return NULL;
-        }
+        if(ans.first == ans.second) return NULL;
         return root;
     }
 };
