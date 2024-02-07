@@ -11,17 +11,23 @@
  */
 class Solution {
 public:
-    TreeNode* removeLeafNodes(TreeNode* root, int target) {
+    TreeNode* leafs(TreeNode* root , int target) {
         if(!root) return root;
+        if(!root->left && !root->right) {
+            if(target == root->val) return NULL;
+            return root;
+        }
         
-        root->left = removeLeafNodes(root->left , target);
-        root->right = removeLeafNodes(root->right , target);
+        root->left = leafs(root->left , target);
+        root->right = leafs(root->right , target);
         
         if(!root->left && !root->right) {
             if(root->val == target) return NULL;
             return root;
         }
-        
         return root;
+    }
+    TreeNode* removeLeafNodes(TreeNode* root, int target) {
+        return leafs(root , target);
     }
 };
