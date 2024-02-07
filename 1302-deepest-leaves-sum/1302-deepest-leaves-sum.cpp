@@ -11,29 +11,26 @@
  */
 class Solution {
 public:
-    int depth(TreeNode* root) {
-        if(!root) return 0;
-        int left = depth(root->left);
-        int right = depth(root->right);
-        
-        return max(left , right) + 1;
-    }
-    int sum(TreeNode* root , int depth) {
-        if(!root) return 0;
+    int depth = 0 , sum = 0;
+    void deep(TreeNode* root , int d) {
+        if(!root) return;
         if(!root->left && !root->right) {
-            if(depth == 0) return root->val;
-            return 0;
+            if(d > depth) {
+                sum = root->val;
+                depth = d;
+            } else if(d == depth) {
+                sum += root->val;
+            }
+            
+            return;
         }
         
-        int leftSum = sum(root->left , depth - 1);
-        int rightSum = sum(root->right , depth - 1);
-        
-        return leftSum + rightSum;
+        deep(root->left , d + 1);
+        deep(root->right , d + 1);
     }
+    
     int deepestLeavesSum(TreeNode* root) {
-        int treeDepth = depth(root) - 1;
-        int treeSum = sum(root , treeDepth);
-        
-        return treeSum;
+        deep(root , 0);
+        return sum;
     }
 };
