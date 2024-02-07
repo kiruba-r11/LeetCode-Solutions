@@ -11,41 +11,29 @@
  */
 class Solution {
 public:
-    TreeNode* solve(map <int , pair <int , int>> &hash , int node) {
-
-        if(node < 1) return NULL;
-        
-        TreeNode* root = new TreeNode(node);
-        root->left = solve(hash , hash[node].first);
-        root->right = solve(hash , hash[node].second);
-        
-        return root;
-    }
-    
-    
-    TreeNode* createBinaryTree(vector<vector<int>>& desc) {
-        map <int , pair <int , int>> hash;
-        map <int , bool> isChild;
-        
-        for(auto i: desc) {
-            pair <int , int> t = {-1 , -1};
-            
-            if(hash[i[0]].first >= 1) t.first = hash[i[0]].first;
-            if(hash[i[0]].second >= 1) t.second = hash[i[0]].second;
-            
-            if(i[2] == 1) hash[i[0]] = {i[1] , t.second};
-            else hash[i[0]] = {t.first , i[1]};
-            
-            isChild[i[1]] = true;
-            if(!isChild[i[0]]) isChild[i[0]] = false;
+    TreeNode* createBinaryTree(vector<vector<int>>& des) {
+        unordered_map <int , bool> child;
+        int n = des.size();
+        for(int i = 0; i < n; i++) {    
+            child[des[i][1]] = true;
         }
         
-        int parent = -1;
-        for(auto i: isChild) {
-            if(!i.second) parent = i.first;
+        unordered_map <int , TreeNode*> hash;
+        for(int i = 0; i < n; i++) {
+            if(hash.find(des[i][0]) == hash.end()) {
+                hash[des[i][0]] = new TreeNode(des[i][0]);
+            } 
+            if(hash.find(des[i][1]) == hash.end()) {
+                hash[des[i][1]] = new TreeNode(des[i][1]);
+            }
+            
+            if(des[i][2]) hash[des[i][0]]->left = hash[des[i][1]];
+            else hash[des[i][0]]->right = hash[des[i][1]];
         }
         
-        TreeNode* root = solve(hash , parent);
-        return root;
+        for(auto i: hash) {
+            if(child.find(i.first) == child.end()) return hash[i.first];
+        }
+        return NULL;
     }
 };
