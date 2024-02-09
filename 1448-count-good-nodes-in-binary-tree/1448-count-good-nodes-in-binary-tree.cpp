@@ -11,18 +11,15 @@
  */
 class Solution {
 public:
-    int count = 0;
-    void solve(TreeNode* root , int maxTillNow) {
-        if(root == NULL) return ;
-        if(root->val >= maxTillNow) {
-            count++;
-            maxTillNow = root->val;
-        }
-        solve(root->left , maxTillNow);
-        solve(root->right , maxTillNow);
+    int ans = 0;
+    void goodnode(TreeNode* root , int val) {
+        if(!root) return;
+        if(root->val >= val) ans++;
+        goodnode(root->left , max(root->val , val));
+        goodnode(root->right , max(root->val , val));
     }
     int goodNodes(TreeNode* root) {
-        solve(root , INT_MIN);
-        return count;
+        goodnode(root , root->val);
+        return ans;
     }
 };
