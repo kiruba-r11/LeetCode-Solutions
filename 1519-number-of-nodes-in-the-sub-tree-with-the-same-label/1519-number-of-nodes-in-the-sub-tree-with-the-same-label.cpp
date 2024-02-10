@@ -1,54 +1,48 @@
 class Solution {
 public:
-    
-    vector <int> solve(vector <vector <int>> &graph , int node , string &labels , vector <int> &ans , vector <bool> &visited) {
+    vector <int> ans;
+    vector <int> count(vector <vector <int>> &graph , int src , string &label , vector <bool> &visited) {
         
-        visited[node] = true;
+        visited[src] = true;
         
-        if(graph[node].size() == 0) {
-            vector <int> hash(26);
-            hash[labels[node] - 'a']++;
-            ans[node] = hash[labels[node] - 'a'];
-            return hash;
+        if(graph[src].size() == 0) {
+            vector <int> t(26 , 0);
+            t[label[src] - 'a']++;
+            ans[src] = t[label[src] - 'a'];
+            return t;
         }
         
-        vector <int> hash(26);
-        hash[labels[node] - 'a']++;
-        for(int i = 0; i < graph[node].size(); i++) {
-            
-            if(visited[graph[node][i]] == false) {
-                vector <int> temp = solve(graph , graph[node][i] , labels , ans , visited);
+        vector <int> hash(26 , 0);
+        for(auto adj: graph[src]) {
+            if(!visited[adj]) {
+                vector <int> t = count(graph , adj , label , visited);
 
-                for(int j = 0; j < 26; j++) {
-                    hash[j] += temp[j];
+                for(int i = 0; i < 26; i++) {
+                    hash[i] += t[i];
                 }
             }
         }
         
-        ans[node] = hash[labels[node] - 'a'];
+        hash[label[src] - 'a']++;
+        ans[src] = hash[label[src] - 'a'];
         
         return hash;
     }
-    
     vector<int> countSubTrees(int n, vector<vector<int>>& edges, string labels) {
-        
         vector <vector <int>> graph(n);
-        int m = edges.size();
-        
-        for(int i = 0; i < m; i++) {
+        ans.resize(n);
+        for(int i = 0; i < edges.size(); i++) {
             graph[edges[i][0]].push_back(edges[i][1]);
             graph[edges[i][1]].push_back(edges[i][0]);
         }
-        
         vector <bool> visited(n);
-        vector <int> ans(n);
-        
-        // for(int i = 0; i < n; i++) {
-            // if(visited[i] == false) {
-                solve(graph , 0 , labels , ans , visited);
-            // }
-        // }
-        
+        for(int i = 0; i < n; i++) {
+            if(!visited[i]) {
+                count(graph , i , labels , visited);
+            }
+        }
         return ans;
     }
 };
+
+
