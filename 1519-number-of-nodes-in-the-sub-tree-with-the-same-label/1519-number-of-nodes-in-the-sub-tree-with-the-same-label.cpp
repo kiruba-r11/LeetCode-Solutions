@@ -36,11 +36,7 @@ public:
             graph[edges[i][1]].push_back(edges[i][0]);
         }
         vector <bool> visited(n);
-        for(int i = 0; i < n; i++) {
-            if(!visited[i]) {
-                count(graph , i , labels , visited);
-            }
-        }
+        count(graph , 0 , labels , visited);
         return ans;
     }
 };
