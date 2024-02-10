@@ -11,21 +11,18 @@
  */
 class Solution {
 public:
-    pair <int , int> solve(TreeNode* root , int &ans) {
-    
+    int ans = 0;
+    pair <int , int> path(TreeNode* root) {
         if(!root) return {-1 , -1};
-        if(!root->left && !root->right) return {0 , 0};
+        pair <int , int> left = path(root->left);
+        pair <int , int> right = path(root->right);
+
+        ans = max(ans , max(left.first , right.second));
         
-        pair <int , int> l = solve(root->left , ans);
-        pair <int , int> r = solve(root->right , ans);
-        
-        ans = max(ans , 1 + max(l.second , r.first));
-        return {l.second + 1 , r.first + 1};
+        return {left.second + 1 , right.first + 1};
     }
-    
     int longestZigZag(TreeNode* root) {
-        int ans = 0;
-        solve(root , ans);
-        return ans;
+        pair <int , int> res = path(root);
+        return max(ans , max(res.first , res.second));
     }
 };
