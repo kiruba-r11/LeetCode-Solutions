@@ -11,29 +11,21 @@
  */
 class Solution {
 public:
-    unordered_map <int , int> hash;
-    TreeNode* build(vector <int> &pre , vector <int> &in , int &i , int start , int end) {
-        if(i == pre.size() || start > end) return NULL;
+    TreeNode* build(vector <int> &pre , int &i , int start , int end) {
+    
+        if(i == pre.size() || pre[i] < start || pre[i] > end) return NULL;
         
         TreeNode* root = new TreeNode(pre[i]);
-        int idx = hash[pre[i]];
         i++;
         
-        root->left = build(pre , in , i , start , idx - 1);
-        root->right = build(pre , in , i , idx + 1 , end);
+        root->left = build(pre , i , start , root->val);
+        root->right = build(pre , i , root->val , end);
         
         return root;
     }
+    
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        vector <int> inorder = preorder;
-        sort(inorder.begin() , inorder.end());
-        
-        int n = inorder.size();
-        for(int i = 0; i < n; i++) {
-            hash[inorder[i]] = i;
-        }
-        
-        int idx = 0;
-        return build(preorder , inorder , idx , 0 , n - 1);
+        int i = 0;
+        return build(preorder , i , INT_MIN , INT_MAX);
     }
 };
