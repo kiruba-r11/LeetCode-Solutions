@@ -11,26 +11,28 @@
  */
 class Solution {
 public:
-    TreeNode* solve(vector <int> &inorder , vector <int> &postorder , int start , int end , int &index , map <int , int> &hash) {
-        if(index < 0 || start > end) return NULL;
+    unordered_map <int , int> hash;
+    
+    TreeNode* build(vector <int> &in , vector <int> &post , int &i , int start , int end) {
+        if(i == -1 || start > end) return NULL;
         
-        int newStart = hash[postorder[index]] + 1;
-        int newEnd = hash[postorder[index]] - 1;
+        TreeNode* node = new TreeNode(post[i]);
+        int idx = hash[post[i]];
+        i--;
         
-        TreeNode* root = new TreeNode(postorder[index]);
-        index--;
+        node->right = build(in , post , i , idx + 1 , end);
+        node->left = build(in , post , i , start , idx - 1);
         
-        root->right = solve(inorder , postorder , newStart , end , index , hash);
-        root->left = solve(inorder , postorder , start , newEnd , index , hash);
-        return root;
-        
+        return node;
     }
+    
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
-        int index = postorder.size() - 1;
-        map <int , int> hash;
-        for(int i = 0; i < inorder.size(); i++) {
+        int n = inorder.size();
+        for(int i = 0; i < n; i++) {
             hash[inorder[i]] = i;
         }
-        return solve(inorder , postorder , 0 , postorder.size() - 1 , index , hash);
+        
+        int idx = n - 1;
+        return build(inorder , postorder , idx , 0 , n - 1);
     }
 };
