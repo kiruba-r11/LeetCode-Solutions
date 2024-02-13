@@ -27,14 +27,3 @@ public:
         return -1;
     }
 };
-
-// 1 -> 0 , 1
-// 2 -> 2 , 3
-// 3 -> 4 , 5
-// 4 -> 6 , 7
-    
-// idx is odd, idx is even
-// idx even -> idx / 2 elements on the left, 
-// so a[idx] == a[idx + 1] => go right, but if not, go left
-// idx odd -> idx / 2 + 1 elements on the left, 
-// so a[idx] == a[idx - 1] => go right, but if not, go left
