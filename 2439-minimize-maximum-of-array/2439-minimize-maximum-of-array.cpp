@@ -1,33 +1,32 @@
 class Solution {
 public:
-    bool solve(vector <int> &nums , int val) {
+    bool condition(vector <int> nums , int val) {
+    
         int n = nums.size();
-        
         if(nums[0] > val) return false;
-        long long extra = val - nums[0];
-        int prev = nums[0];
+        long long free = val - nums[0];
         
-        for(int i = 1; i < n; i++) {
+        for(int i = 1; i < n; i++) {    
             if(nums[i] > val) {
-                int ex = nums[i] - val;
-                if(ex > extra) return false;
-                extra -= ex;
+                if(free < nums[i] - val) return false;
+                free -= nums[i] - val;
             } else {
-                extra += val - nums[i];
+                free += val - nums[i];
             }
-            
-            prev = nums[i];
         }
         
         return true;
     }
     
     int minimizeArrayValue(vector<int>& nums) {
-        int low = 0 , high = *max_element(nums.begin() , nums.end()) , ans = high;
+        int n = nums.size();
+        int low = 0 , high = nums[0];
         
+        for(int i = 0; i < n; i++) high = max(high , nums[i]);
+        int ans = high;
         while(low <= high) {
             int mid = low + (high - low) / 2;
-            if(solve(nums , mid)) {
+            if(condition(nums , mid)) {
                 ans = mid;
                 high = mid - 1;
             } else {
