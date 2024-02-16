@@ -1,43 +1,42 @@
 class Solution {
 public:
-    /*
-    
-    Classical pattern -> Find the minimum out of all the maximums 
-    Approach          -> Binary Search on Answer
-    
-    Dilemma           -> Search space :
-                            1. No. of cars
-                            2. Acceptable limit of answer (This is the solution)
-    
-    */
-    
-    
-    bool solve(vector <int> &ranks , int cars , long long limit) {
+    long long sqrt(long long num) {
+        long long low = 1 , high = num;
+        long long ans = low;
+        while(low <= high) {
+            long long mid = low + (high - low) / 2;
+            if(mid <= num / mid) {
+                ans = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
         
-        int n = ranks.size();
+        return ans;
+    }
+    
+    bool condition(vector <int> &nums , int cars , long long time) {
+        int n = nums.size();
+        
         for(int i = 0; i < n; i++) {
+            if(nums[i] > time) return false;
+            long long x = sqrt(time / nums[i]);
+            cars -= x;
             
-            int acccars = sqrt(limit / (long long)ranks[i]);
-            if(acccars >= cars) return true;
-            cars -= acccars;
-            
+            if(cars <= 0) return true;
         }
         
         return false;
     }
     
-    
     long long repairCars(vector<int>& ranks, int cars) {
         sort(ranks.begin() , ranks.end());
-        int n = ranks.size();
-        
-        long long low = 0 , high = ranks[n - 1] * 1LL * cars * cars;
-        long long ans = 0;
-        
+        long long low = 1 , high = 100 * 1LL * cars * 1LL * cars;
+        long long ans = high;
         while(low <= high) {
             long long mid = low + (high - low) / 2;
-            bool check = solve(ranks , cars , mid);
-            if(check) {
+            if(condition(ranks , cars , mid)) {
                 ans = mid;
                 high = mid - 1;
             } else {
