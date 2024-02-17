@@ -5,7 +5,7 @@ public:
         int n = nums.size();
         long long num = 0;
         for(int i = 0; i < n; i++) {
-            if(k != 0) num += nums[i] / k;
+            num += nums[i] / k;
         }
         
         return num >= cnt;
@@ -14,6 +14,7 @@ public:
     int maximumCandies(vector<int>& candies, long long k) {
         long long low = 1 , high = 1e12;
         int ans = 0;
+        
         while(low <= high) {
             long long mid = low + (high - low) / 2;
             if(condition(candies , k , mid)) {
