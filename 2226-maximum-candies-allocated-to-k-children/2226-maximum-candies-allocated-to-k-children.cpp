@@ -12,7 +12,10 @@ public:
     }
     
     int maximumCandies(vector<int>& candies, long long k) {
-        long long low = 1 , high = 1e12;
+        sort(candies.begin() , candies.end());
+        int n = candies.size();
+        
+        long long low = 1 , high = n * 1LL * candies[n - 1];
         int ans = 0;
         
         while(low <= high) {
