@@ -6,7 +6,7 @@ public:
         double time = 0;
         for(int i = 0; i < n; i++) {
             if(i == n - 1) time += ((double)dist[i]) / speed;
-            else time += dist[i] / speed + (dist[i] % speed != 0);
+            else time += ceil((double)dist[i] / speed);
         }
         
         return time <= hour;
