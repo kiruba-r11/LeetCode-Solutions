@@ -33,7 +33,7 @@ public:
                     long long val = 1;
                     if(arr[i] != arr[start] && arr[start] != arr[end]) val = cnt * cnts * cnte;
                     else if(arr[i] != arr[start]) val = cnt * cnts * (cnts - 1) / 2;
-                    else if(arr[start] != arr[end]) val = cnt * cnts * cnte / 2;
+                    else if(arr[start] != arr[end]) val = cnt * (cnt - 1) * cnte / 2;
                     else val = cnt * (cnt - 1) * (cnt - 2) / 6;
                     
                     ans += val;
