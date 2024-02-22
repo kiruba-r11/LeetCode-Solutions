@@ -14,10 +14,10 @@ public:
                     long long sum = (long long)nums[i] + (long long)nums[j] + (long long)nums[start] + (long long)nums[end];
                     
                     int ts = start;
-                    while(ts < n && nums[ts] == nums[start]) ts++;
+                    while(ts < end && nums[ts] == nums[start]) ts++;
                     
                     int te = end;
-                    while(te >= 0 && nums[te] == nums[end]) te--;
+                    while(te > start && nums[te] == nums[end]) te--;
                     
                     if(sum == target) {
                         ans.push_back({nums[i] , nums[j] , nums[start] , nums[end]});
