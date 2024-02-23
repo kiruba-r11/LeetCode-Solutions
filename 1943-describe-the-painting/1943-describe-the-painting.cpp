@@ -1,35 +1,29 @@
 class Solution {
 public:
     vector<vector<long long>> splitPainting(vector<vector<int>>& segments) {
+        map <int , long long> prefix;
         int n = segments.size();
-        int m = 0;
         
-        for(int i = 0; i < n; i++) m = max(segments[i][1] , m);
-        
-        vector <pair <long long , int>> prefix(m + 1);
         for(int i = 0; i < n; i++) {
-            prefix[segments[i][0]].first += segments[i][2];
-            prefix[segments[i][1]].first -= segments[i][2];
+            int first = segments[i][0];
+            int last = segments[i][1];
+            int color = segments[i][2];
             
-            prefix[segments[i][0]].second = 1;
-            prefix[segments[i][1]].second = 1;
+            prefix[first] += color;
+            prefix[last] -= color;
         }
         
-        for(int i = 2; i <= m; i++) {
-            prefix[i].first += prefix[i - 1].first;
-        }
-        
+        int i = 0;
         vector <vector <long long>> ans;
-        int start = 1;
-        
-        for(int i = 2; i <= m; i++) {
-            if(prefix[i].second != 0) {
-                if(prefix[i - 1].first != 0)
-                    ans.push_back({start , i , prefix[i - 1].first});
-                start = i;
-            }
-        }
+        for(auto it: prefix) {
+            if(prefix[i] > 0) {
+                ans.push_back({i , it.first , prefix[i]});
+            } 
+            prefix[it.first] += prefix[i];
+            i = it.first;
+        } 
         
         return ans;
     }
 };
+
