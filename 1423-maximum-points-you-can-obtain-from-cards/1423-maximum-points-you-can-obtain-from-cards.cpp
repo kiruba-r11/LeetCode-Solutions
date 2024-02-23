@@ -1,26 +1,28 @@
 class Solution {
 public:
-    int maxScore(vector<int>& nums, int len) {
+    int maxScore(vector<int>& nums, int k) {
         int n = nums.size();
-        int k = n - len;
-        int i = 0 , j = 0 , sum = 0 , ans = INT_MAX , res = 0;
+        int sum = 0;
+        int i = 0 , j = 0;
+        int cursum = 0;
+        int ans = 0;
         
-        for(int i = 0; i < n; i++) res += nums[i];
+        for(int i = 0; i < n; i++) sum += nums[i];
         
         while(j < n) {
             int window = j - i + 1;
-            if(window <= k) {
-                sum += nums[j];
-                if(window == k) {
-                    ans = min(ans , sum);
+            if(window <= (n - k)) {
+                cursum += nums[j];
+                if(window == (n - k)) {
+                    ans = max(ans , sum - cursum);
                 }
                 j++;
             } else {
-                sum -= nums[i];
+                cursum -= nums[i];
                 i++;
             }
         }
         
-        return res - ans;
+        return ans;
     }
 };
