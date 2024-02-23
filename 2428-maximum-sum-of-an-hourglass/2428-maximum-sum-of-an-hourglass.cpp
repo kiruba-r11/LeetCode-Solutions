@@ -13,15 +13,18 @@ public:
     
         if(inbounds(grid , row , col) == false) return 0;
         
-        int sum = 0;
-        sum += grid[row][col];
-        sum += grid[row][col + 1];
-        sum += grid[row][col + 2];
-        sum += grid[row + 1][col + 1];
-        sum += grid[row + 2][col];
-        sum += grid[row + 2][col + 1];
-        sum += grid[row + 2][col + 2];
+        vector <pair <int , int>> dirs = {
+            {0 , 0} , {0 , 1} , {0 , 2}, {1 , 1} , {2 , 0} , {2 , 1} , {2 , 2}
+        };
         
+        int sum = 0;
+        
+        for(auto dir: dirs) {
+            int x = dir.first;
+            int y = dir.second;
+            
+            sum += grid[row + x][col + y];
+        }
         return sum;
     }
     
