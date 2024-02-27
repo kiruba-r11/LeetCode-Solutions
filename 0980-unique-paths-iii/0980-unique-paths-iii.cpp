@@ -1,53 +1,58 @@
 class Solution {
 public:
+    vector <pair <int , int>> dirs = {{-1 , 0} , {1 , 0} , {0 , -1} , {0 , 1}};
     
-    int solve(vector <vector <int>> &grid , int i , int j , int x , int y , int cellsVisited , int cells) {
+    int dfs(vector <vector <int>> &grid , int row , int col , int &free) {
+    
+        if(row < 0 || row >= grid.size() || col < 0 || col >= grid[0].size() || 
+           grid[row][col] == -1 || grid[row][col] == 1) return 0;
         
-        if(i == x && j == y) {
-            if(cellsVisited == cells)
-                return 1;
-            else
-                return 0;
+        if(grid[row][col] == 2) {
+            if(free == 0) return 1;
+            return 0;
         }
         
-        if(i < 0 || j < 0 || i >= grid.size() || j >= grid[0].size() || grid[i][j] == -1)
-            return 0;
+        int ans = 0;
+        grid[row][col] = -1;
+        free--;
         
-        // make a choice
-        grid[i][j] = -1;
+        for(auto dir: dirs) {
+            int x = dir.first;
+            int y = dir.second;
+            
+            ans += dfs(grid , x + row , y + col , free);
+        } 
         
-        // explore all four paths
-        int up = solve(grid , i - 1 , j , x , y , cellsVisited + 1 , cells); // up
-        int down = solve(grid , i + 1 , j , x , y , cellsVisited + 1 , cells); // down
-        int left = solve(grid , i , j - 1 , x , y , cellsVisited + 1 , cells); // left
-        int right = solve(grid , i , j + 1 , x , y , cellsVisited + 1 , cells); // right
+        grid[row][col] = 0;
+        free++;
         
-        // remove the choice made
-        grid[i][j] = 0;
-        
-        return up + down + left + right;
+        return ans;
     }
     
     int uniquePathsIII(vector<vector<int>>& grid) {
+        int n = grid.size() , m = grid[0].size();
+        int free = 0 , row = -1 , col = -1;
         
-        int startRow , endRow , startCol , endCol;
-        int cells = 2;
-        
-        for(int i = 0; i < grid.size(); i++) {
-            for(int j = 0; j < grid[0].size(); j++) {
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
                 if(grid[i][j] == 1) {
-                    startRow = i;
-                    startCol = j;
-                } else if(grid[i][j] == 2) {
-                    endRow = i;
-                    endCol = j;
-                } else if(grid[i][j] == 0) {
-                    cells++;
+                    row = i;
+                    col = j;
+                } 
+                if(grid[i][j] == 0) {
+                    free++;
                 }
             }
         }
-        
-        int ans = solve(grid , startRow , startCol , endRow , endCol , 1 , cells);
+
+        int ans = 0;
+        for(auto dir: dirs) {
+            int x = dir.first;
+            int y = dir.second;
+            
+            ans += dfs(grid , row + x , col + y , free);
+        }
+
         return ans;
     }
 };
