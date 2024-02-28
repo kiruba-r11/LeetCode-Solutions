@@ -27,12 +27,6 @@ public:
             }
             
             pick = 1 + dfs(matrix , row + 1 , allow - newentry , cols);
-            
-            // for(int i = 0; i < m; i++) {
-            //     if(matrix[row][i] == 1) {
-            //         cols[i] = 0;
-            //     }
-            // }
         }
         
         return max(pick , notpick);
