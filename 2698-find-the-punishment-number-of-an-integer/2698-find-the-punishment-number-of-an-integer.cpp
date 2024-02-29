@@ -1,40 +1,28 @@
 class Solution {
 public:
-    
-    bool partition(string &str , int i , string &cur , int sum , int num) {
+    bool valid(string &s , int start , int &cur , int sq) {
         
-        if(i == str.size()) {
-            if(to_string(sum + stoi(cur)) == to_string(num)) return true;
-            return false;
+        if(start == s.size()) {
+            return cur == sq;
         }
         
-        cur.push_back(str[i]);
-        if(partition(str , i + 1 , cur , sum , num)) return true;
-        cur.pop_back();
-        
-        string temp = "";
-        temp.push_back(str[i]);
-        if(partition(str , i + 1 , temp , sum + (cur.size() ? stoi(cur) : 0) , num)) return true;
-        temp = cur;
+        string prefix = "";
+        for(int i = start; i < s.size(); i++) {
+            prefix += s[i];
+            cur += stoi(prefix);
+            if(valid(s , i + 1 , cur , sq)) return true;
+            cur -= stoi(prefix);
+        }
         
         return false;
     }
-    
-    bool solve(int n) {
-        int val = n * n;
-        string val_str = to_string(val);
-        
-        int sum = 0;
-        string cur = "";
-        return partition(val_str , 0 , cur , sum , n);
-    }
-    
     int punishmentNumber(int n) {
         int ans = 0;
         for(int i = 1; i <= n; i++) {
-            if(solve(i)) {
-                ans += i * i;
-            }
+            int sq = i * i;
+            string sqs = to_string(sq);
+            int cur = 0;
+            if(valid(sqs , 0 , cur , i)) ans += sq;
         }
         return ans;
     }
