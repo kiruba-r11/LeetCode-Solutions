@@ -1,36 +1,50 @@
 class Solution {
 public:
-    bool noLeading(string &s) {
+    vector <string> ans;
+    vector <string> cur;
     
-        if(s[0] != '0' || s == "0") return true;
+    bool noleadzero(string &s) {
+        if(s[0] != '0') return true;
+        if(s.size() == 1) return true;
         return false;
     }
     
-    void solve(string s , int index , string ip , vector <string> &ips , string cur , int cnt) {
-        
-        if(index == s.size()) {
-            if(cnt == 4 && (ip.size() == s.size() + 4)) {
-                ip.pop_back();
-                ips.push_back(ip);
+    bool inrange(string &s) {
+        int num = stoi(s);
+        if(num >= 0 && num <= 255) return true;
+        return false;
+    }
+    
+    void solve(string &s , int idx) {
+        if(cur.size() > 4) return;
+        if(s.size() == idx) {
+            string temp = "";
+            for(int x = 0; x < cur.size(); x++) {
+                if(x == 0) temp += cur[x];
+                else {
+                    temp += ".";
+                    temp += cur[x];
+                }
             }
+            if(temp.size() != s.size() + 3) return;
+            ans.push_back(temp);
             return;
         }
         
-
-        cur += s[index];
-        solve(s , index + 1 , ip , ips , cur , cnt);
-        
-        if((cur.size() && cur.size() <= 3) && (stoi(cur) <= 255) && (noLeading(cur)) && cnt <= 3) {
-            ip += cur;
-            ip += ".";
-            solve(s , index + 1 , ip , ips , "" , cnt + 1);
+        string prefix = "";
+        for(int i = idx; i < s.size(); i++) {
+            if(prefix.size() > 3) break;
+            prefix += s[i];
+            
+            if(noleadzero(prefix) && inrange(prefix)) {
+                cur.push_back(prefix);
+                solve(s , i + 1);
+                cur.pop_back();
+            }
         }
     }
     vector<string> restoreIpAddresses(string s) {
-        string ip = "" , cur = "";
-        vector <string> ips;
-        int cnt = 0;
-        solve(s , 0 , ip , ips , cur , cnt);
-        return ips;
+        solve(s , 0);
+        return ans;
     }
 };
