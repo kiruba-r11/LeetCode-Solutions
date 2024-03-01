@@ -32,8 +32,11 @@ public:
         }
         
         string prefix = "";
+        int allow = s.size() / 2;
+        
         for(int i = start; i < s.size(); i++) {
             prefix += s[i];
+            if(prefix.size() > allow) break;
             if(first == "") {
                 if(solve(s , i + 1 , prefix , second , false)) return true;
             } else if(second == "") {
