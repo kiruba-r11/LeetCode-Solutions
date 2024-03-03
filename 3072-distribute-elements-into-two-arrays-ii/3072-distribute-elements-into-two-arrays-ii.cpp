@@ -20,8 +20,8 @@ public:
         
         int i = 2; 
         while(i < n) {
-            int n1 = s1.size() - s1.order_of_key(nums[i] + 1);
-            int n2 = s2.size() - s2.order_of_key(nums[i] + 1);
+            int n1 = a.size() - s1.order_of_key(nums[i] + 1);
+            int n2 = b.size() - s2.order_of_key(nums[i] + 1);
             
             if(n1 > n2) {
                 a.push_back(nums[i]);
@@ -30,7 +30,7 @@ public:
                 b.push_back(nums[i]);
                 s2.insert(nums[i]);
             } else {
-                if((int)s1.size() <= (int)s2.size()) {
+                if((int)a.size() <= (int)b.size()) {
                     a.push_back(nums[i]);
                     s1.insert(nums[i]);
                 } else {
