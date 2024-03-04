@@ -31,11 +31,19 @@ public:
         return dp[mask] = ans;
     }
     
+    int fpow(int b , int p) {
+        if(p == 0) return 1;
+        int cur = fpow(b * b , p / 2);
+        if(p & 1) return b * cur;
+        return cur;
+    }
+    
     int maxScore(vector<int>& nums) {
         int n = nums.size();
         int opr = 0;
         int mask = 0;
-        vector <int> dp(16385 , -1);
+        int size = fpow(2 , n) + 1;
+        vector <int> dp(size , -1);
         return solve(nums , opr , mask , dp);
     }
 };
