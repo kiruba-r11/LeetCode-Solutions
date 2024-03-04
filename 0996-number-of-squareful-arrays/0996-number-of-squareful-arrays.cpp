@@ -59,10 +59,6 @@ public:
         
         for(int i = 0; i < n; i++) arr[nums[i]]++;
         
-        for(int i = 0; i < n; i++) {
-            if(store.find(nums[i]) == store.end()) return 0;
-        }
-        
         vector <int> cur;
         solve(n , arr , store , cur);
         return ans;
