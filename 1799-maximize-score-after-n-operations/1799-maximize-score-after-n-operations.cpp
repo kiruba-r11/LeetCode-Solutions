@@ -23,7 +23,7 @@ public:
             for(int j = i + 1; j < n; j++) {
                 if(taken(mask , j)) continue;
                 int newmask = usemask(mask , i , j);
-                int score = (opr + 1) * gcd[i][j] + solve(nums , opr + 1 , newmask , dp , gcd);
+                int score = opr * gcd[i][j] + solve(nums , opr + 1 , newmask , dp , gcd);
                 ans = max(ans , score);
             }
         }
@@ -40,7 +40,7 @@ public:
     
     int maxScore(vector<int>& nums) {
         int n = nums.size();
-        int opr = 0;
+        int opr = 1;
         int mask = 0;
         int size = fpow(2 , n) + 1;
         
