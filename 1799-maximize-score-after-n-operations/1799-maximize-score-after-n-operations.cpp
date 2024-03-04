@@ -10,7 +10,7 @@ public:
         return newmask;
     }
     
-    int solve(vector <int> &nums , int opr , int mask , vector <int> &dp) {
+    int solve(vector <int> &nums , int opr , int mask , vector <int> &dp , vector <vector <int>> &gcd) {
         int n = nums.size();
         int ans = 0;
 
@@ -23,7 +23,7 @@ public:
             for(int j = i + 1; j < n; j++) {
                 if(taken(mask , j)) continue;
                 int newmask = usemask(mask , i , j);
-                int score = (opr + 1) * __gcd(nums[i] , nums[j]) + solve(nums , opr + 1 , newmask , dp);
+                int score = (opr + 1) * gcd[i][j] + solve(nums , opr + 1 , newmask , dp , gcd);
                 ans = max(ans , score);
             }
         }
@@ -43,7 +43,16 @@ public:
         int opr = 0;
         int mask = 0;
         int size = fpow(2 , n) + 1;
+        
         vector <int> dp(size , -1);
-        return solve(nums , opr , mask , dp);
+        vector <vector <int>> gcd(n , vector <int> (n));
+        
+        for(int i = 0; i < n; i++) {
+            for(int j = i + 1; j < n; j++) {
+                gcd[i][j] = __gcd(nums[i] , nums[j]);
+            }
+        }
+        
+        return solve(nums , opr , mask , dp , gcd);
     }
 };
