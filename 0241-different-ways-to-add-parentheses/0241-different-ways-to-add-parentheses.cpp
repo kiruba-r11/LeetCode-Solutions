@@ -1,13 +1,24 @@
 class Solution {
 public:
+    unordered_map <string , vector <int>> dp;
     vector<int> diffWaysToCompute(string exp) {
         vector <int> ans;
+        
         for(int i = 0; i < exp.size(); i++) {
             int ch = exp[i];
             if(ch == '+' || ch == '-' || ch == '*') {
                 
-                vector <int> left = diffWaysToCompute(exp.substr(0 , i));
-                vector <int> right = diffWaysToCompute(exp.substr(i + 1));
+                string str_left = exp.substr(0 , i);
+                string str_right = exp.substr(i + 1);
+                
+                vector <int> left;
+                vector <int> right;
+                
+                if(dp.find(str_left) != dp.end()) left = dp[str_left];
+                else left = diffWaysToCompute(str_left);
+                
+                if(dp.find(str_right) != dp.end()) right = dp[str_right];
+                else right = diffWaysToCompute(str_right);
                 
                 for(auto l: left) {
                     for(auto r: right) {
@@ -19,6 +30,6 @@ public:
             }
         }
         if(ans.size() == 0) ans.push_back(stoi(exp));
-        return ans;
+        return dp[exp] = ans;
     }
 };
