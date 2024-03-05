@@ -31,7 +31,6 @@ public:
                 for(char ch = 'a'; ch <= 'z'; ch++) {
                     string newstr = str;
                     newstr.push_back(ch);
-                    cout << newstr << endl;
                     if(isSub(s , newstr , k)) {
                         q.push(newstr);
                         ans = newstr;
