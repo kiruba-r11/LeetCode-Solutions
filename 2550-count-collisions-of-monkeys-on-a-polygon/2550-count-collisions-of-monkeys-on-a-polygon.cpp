@@ -17,7 +17,5 @@ public:
         long long ans = fpow(2 , n , m);
         ans = (ans - 2 + m) % m;
         return ans;
-        if(ans <= 2) return 2 * n;
-        return (int) ans - 2;
     }
 };
