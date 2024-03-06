@@ -12,17 +12,26 @@
 class Solution {
 public:
     int ans = 0;
-    pair <int , int> path(TreeNode* root) {
-        if(!root) return {-1 , -1};
-        pair <int , int> left = path(root->left);
-        pair <int , int> right = path(root->right);
-
-        ans = max(ans , max(left.first , right.second));
+    pair <int , int> solve(TreeNode* root) {
+    
+        if(!root) return {0 , 0};
+        if(!root->left && !root->right) return {1 , 1};
         
-        return {left.second + 1 , right.first + 1};
+        pair <int , int> left = solve(root->left);
+        pair <int , int> right = solve(root->right);
+        
+        pair <int , int> cur = {left.second + 1 , right.first + 1};
+        
+        ans = max(ans , cur.first);
+        ans = max(ans , cur.second);
+        ans = max(ans , left.first);
+        ans = max(ans , right.second);
+        
+        return cur;
     }
+    
     int longestZigZag(TreeNode* root) {
-        pair <int , int> res = path(root);
-        return max(ans , max(res.first , res.second));
+        solve(root);
+        return ans == 0 ? 0 : ans - 1;
     }
 };
