@@ -9,44 +9,43 @@
  */
 class Solution {
 public:
-    void dfs(TreeNode* root , unordered_map <int , vector <int>> &graph) {
-        if(!root) return;
+    vector <TreeNode*> nodeToRootPath(TreeNode* root , TreeNode* target) {
+        if(!root) return {};
+        if(root == target) return {root};
         
-        graph[root->val];
-        if(root->left) {
-            graph[root->val].push_back(root->left->val);
-            graph[root->left->val].push_back(root->val);
-        }
-        if(root->right) {
-            graph[root->val].push_back(root->right->val);
-            graph[root->right->val].push_back(root->val);
-        }
+        vector <TreeNode*> left = nodeToRootPath(root->left , target);
+        vector <TreeNode*> right = nodeToRootPath(root->right , target);
         
-        dfs(root->left , graph);
-        dfs(root->right , graph);
+        if(!left.size() && !right.size()) return {};
+        if(!left.size()) {
+            right.push_back(root);
+            return right;
+        }
+        if(!right.size()) {
+            left.push_back(root);
+            return left;
+        }
+        return {};
     }
     
-    vector <int> ans;
-    
-    void distance(unordered_map <int , vector <int>> &graph , int src , int k , unordered_map <int , bool> &visited) {
-        if(k == 0) {
-            ans.push_back(src);
-            return;
-        }
+    void findKDown(TreeNode* root, int block , int dist , vector <int> &ans) {
         
-        visited[src] = true;
-        for(auto adj: graph[src]) {
-            if(!visited[adj]) distance(graph , adj , k - 1 , visited);
-        }
+        if(!root) return;
+        if(root->val == block) return;
+        if(dist == 0) ans.push_back(root->val);
+        
+        findKDown(root->left , block , dist - 1 , ans);
+        findKDown(root->right , block , dist - 1 , ans);
     }
     
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-        unordered_map <int , vector <int>> graph;
-        dfs(root , graph);
+        vector <TreeNode*> nodes = nodeToRootPath(root , target);
+        int n = nodes.size();
         
-        unordered_map <int , bool> visited;
-        distance(graph , target->val , k , visited);
-        
+        vector <int> ans;
+        for(int i = 0; i < n; i++) {
+            findKDown(nodes[i] , i == 0 ? -1 : nodes[i - 1]->val , k - i , ans);
+        }
         return ans;
     }
 };
