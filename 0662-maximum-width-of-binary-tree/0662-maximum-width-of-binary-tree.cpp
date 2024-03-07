@@ -18,7 +18,7 @@ public:
         
         while(!q.empty()) {
             int count = q.size();
-            long long minval = -1;
+            int minval = -1;
             int maxval = -1;
             for(int i = 0; i < count; i++) {
                 TreeNode* node = q.front().first;
