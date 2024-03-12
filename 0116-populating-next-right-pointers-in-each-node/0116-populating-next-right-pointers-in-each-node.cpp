@@ -22,11 +22,11 @@ public:
         if(!root) return root;
         
         Node* level = root;
-        while(level != NULL) {
+        while(level->left) {
             Node* temp = level;
             while(level) {
-                if(level->left) level->left->next = level->right;
-                if(level->right && level->next) level->right->next = level->next->left;
+                level->left->next = level->right;
+                if(level->next) level->right->next = level->next->left;
                 level = level->next;
             }
             level = temp->left;
