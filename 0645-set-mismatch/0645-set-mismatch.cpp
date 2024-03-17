@@ -1,17 +1,15 @@
 class Solution {
 public:
     vector<int> findErrorNums(vector<int>& nums) {
-        int _xor = 0 , summ = 0 , sum = 0;
+        int _xor = 0;
         int n = nums.size();
         
         for(int i = 1; i <= n; i++) {
             _xor ^= i;
-            summ += i;
         }
         
         for(int i = 0; i < n; i++) {
             _xor ^= nums[i];
-            sum += nums[i];
         }
         
         int last = 0;
