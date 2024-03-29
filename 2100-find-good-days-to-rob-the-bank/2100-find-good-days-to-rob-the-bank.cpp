@@ -20,8 +20,7 @@ public:
         
         vector <int> ans;
         for(int i = time; i < n - time; i++) {
-            if(time == 0) ans.push_back(i);
-            else if(prefix[i] >= time + 1 && suffix[i] >= time + 1) ans.push_back(i);
+            if(prefix[i] >= time + 1 && suffix[i] >= time + 1) ans.push_back(i);
         }
         
         return ans;
