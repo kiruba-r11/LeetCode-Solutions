@@ -10,24 +10,11 @@ public:
         return -1;
     }
     
-    bool ispossible(string &s , int k) {
+    bool ispossible(string &s , int k , vector <int> hash) {
     
-        vector <int> hash(4 , 0);
         int n = s.size();
-        
-        for(int i = 0; i < n; i++) {
-            hash[getIndex(s[i])]++;
-        }
-        
-        if(k == 0) {
-            int req = n / 4;
-            for(int i = 0; i < 4; i++) {
-                if(hash[i] != req) return false;
-            }
-            return true;
-        }
-        
         int i = 0 , j = 0;
+        
         while(j < n) {
             int window = j - i + 1;
             if(window <= k) {
@@ -56,17 +43,35 @@ public:
                 i++;
             }
         }
+        
         return false;
     }
     
     int balancedString(string s) {
         int n = s.size();
-        int low = 0 , high = n;
+        int low = 1 , high = n;
         int ans = high;
+        int req = n / 4;
+        
+        vector <int> hash(4 , 0);
+        
+        for(int i = 0; i < n; i++) {
+            hash[getIndex(s[i])]++;
+        }
+        
+        bool check = true;
+        for(int i = 0; i < 4; i++) {
+            if(hash[i] != req) {
+                check = false;
+                break;
+            }
+        }
+        
+        if(check) return 0;
         
         while(low <= high) {
             int mid = low + (high - low) / 2;
-            bool check = ispossible(s , mid);
+            bool check = ispossible(s , mid , hash);
             if(check) {
                 ans = mid;
                 high = mid - 1;
