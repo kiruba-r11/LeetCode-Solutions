@@ -1,21 +1,43 @@
 class Solution {
 public:
-    int totalFruit(vector<int>& nums) {
+    bool ispossible(vector <int> &nums , int k , int limit) {
+    
+        int i = 0 , j = 0;
         int n = nums.size();
-        int i = 0 , j = 0 , ans = 0;
-        unordered_map <int , int> hash;
+        map <int , int> hash;
         
         while(j < n) {
-            if(hash.size() <= 2) {
+            int window = j - i + 1;
+            if(window <= k) {
                 hash[nums[j]]++;
-                if(hash.size() <= 2) ans = max(ans , j - i + 1);
-                j++; 
+                if(window == k) {
+                    if(hash.size() <= limit) return true;
+                } 
+                j++;
             } else {
-                while(hash.size() > 2) {
-                    if(hash[nums[i]] == 1) hash.erase(nums[i]);
-                    else hash[nums[i]]--;
-                    i++;
-                }
+                if(hash[nums[i]] == 1) hash.erase(nums[i]);
+                else hash[nums[i]]--;
+                i++;
+            }
+        }
+        
+        return false;
+    }
+    
+    int totalFruit(vector<int>& fruits) {
+        // Find the longest subarray such that the distinct elements are less than or equal to two
+        int n = fruits.size();
+        int low = 1 , high = n;
+        int ans = 0;
+        
+        while(low <= high) {
+            int mid = low + (high - low) / 2;
+            bool check = ispossible(fruits , mid , 2);
+            if(check) {
+                ans = mid;
+                low = mid + 1;
+            } else {
+                high = mid - 1;
             }
         }
         
