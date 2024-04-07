@@ -1,22 +1,25 @@
 class Solution {
 public:
-    bool valid(unordered_map <char , int> &hash) {
-        return hash['a'] > 0 && hash['b'] > 0 && hash['c'] > 0;
-    }
     int numberOfSubstrings(string s) {
+        int i = 0 , j = 0;
         int n = s.size();
-        int i = 0 , j = 0 , ans = 0;
-        unordered_map <char , int> hash;
+        int ans = 0;
+        map <int , int> hash;
         
-        while(j <= n) {
-            if(valid(hash)) {
-                ans += n - j + 1;   
-                hash[s[i]]--;
-                i++;
-            } else {
-                if(j < n) hash[s[j]]++;
-                j++;
+        while(j < n) {
+            hash[s[j] - 'a']++;
+            while(hash.size() == 3) {
+                if(hash[s[i] - 'a'] == 1) {
+                    break;
+                } else {
+                    hash[s[i] - 'a']--;
+                    i++;
+                }
             }
+            if(hash.size() == 3) {
+                ans += i + 1;
+            }
+            j++;
         }
         
         return ans;
