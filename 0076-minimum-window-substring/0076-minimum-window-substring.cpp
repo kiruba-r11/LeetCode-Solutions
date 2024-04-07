@@ -10,9 +10,6 @@ public:
     
     string minWindow(string s, string t) {
         int n = s.size();
-        int m = t.size();
-        
-        if(m > n) return "";
         
         vector <int> shash(127);
         vector <int> thash(127);
@@ -37,7 +34,9 @@ public:
             }
             j++;
         }
+        
         if(ansi == -1 || ansj == -1) return "";
+        
         string ans = "";
         for(int i = ansi; i <= ansj; i++) ans.push_back(s[i]);
         
