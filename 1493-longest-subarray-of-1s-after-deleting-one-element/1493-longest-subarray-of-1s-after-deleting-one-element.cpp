@@ -1,45 +1,19 @@
 class Solution {
 public:
-    bool condition(vector <int> &nums , int k) {
-    
-        int i = 0 , j = 0 , n = nums.size();
-        int ones = 0;
-        int flips = 0;
-        
-        while(j < n) {
-            int window = j - i + 1;
-            if(window <= k) {
-                if(nums[j] == 1) ones++;
-                else flips++;
-                
-                if(window == k) {
-                    if(flips <= 1) return true;
-                }
-                
-                j++;
-            } else {
-                if(nums[i] == 1) ones--;
-                else flips--;
-                i++;
-            }
-        }
-        
-        return false;
-    }
-    
     int longestSubarray(vector<int>& nums) {
+        int one = 0;
+        int i = 0 , j = 0;
         int n = nums.size();
-        int low = 0 , high = n;
         int ans = 0;
         
-        while(low <= high) {
-            int mid = low + (high - low) / 2;
-            if(condition(nums , mid)) {
-                ans = mid;
-                low = mid + 1;
-            } else {
-                high = mid - 1;
+        while(j < n) {
+            one += nums[j];
+            while((j - i + 1) - one > 1) {
+                one -= nums[i];
+                i++;
             }
+            if((j - i + 1) - one <= 1) ans = max(ans , j - i + 1);
+            j++;
         }
         
         return ans - 1;
