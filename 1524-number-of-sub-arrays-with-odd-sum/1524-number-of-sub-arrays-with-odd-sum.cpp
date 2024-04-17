@@ -8,14 +8,12 @@ public:
         map <int , int> hash;
         hash[sum] = 1;
         
-        long long total = (n + 1) * 1LL * n / 2;
-        
         for(int i = 0; i < n; i++) {
             sum += arr[i];
-            ans += hash[sum % 2];
+            ans += hash[1 - sum % 2];
             hash[sum % 2]++;
         }
         
-        return (total - ans + m) % m;
+        return ans % m;
     }
 };
