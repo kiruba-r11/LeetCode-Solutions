@@ -1,36 +1,18 @@
 class Solution {
 public:
-    int slide(vector <int> &nums , int goal) {
-        // Form subarrays ending at index j
-        // Then, count all the valid subarrays from 0 to i
-        
-        if(goal < 0) return 0;
-        
-        int i = 0 , j = 0;
+    int numSubarraysWithSum(vector<int>& nums, int goal) {
         int n = nums.size();
         int sum = 0;
         int ans = 0;
+        map <int , int> hash;
+        hash[sum] = 1;
         
-        while(j < n) {
-            sum += nums[j];
-            while(sum > goal) {
-                sum -= nums[i];
-                i++;
-            }
-            if(sum <= goal) ans += j - i + 1;
-            j++;
+        for(int i = 0; i < n; i++) {
+            sum += nums[i];
+            ans += hash[sum - goal];
+            hash[sum]++;
         }
         
         return ans;
-    }
-    
-    int numSubarraysWithSum(vector<int>& nums, int goal) {
-        // To find subarray count with sum == k
-        // Find:
-        //      s1 = Subarray count with sum <= k
-        //      s2 = Subarray count with sum <= k - 1
-        // s = s1 - s2
-        
-        return slide(nums , goal) - slide(nums , goal - 1);
     }
 };
