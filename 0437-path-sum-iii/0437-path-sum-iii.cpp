@@ -12,21 +12,23 @@
 class Solution {
 public:
     int ans = 0;
-    void path(TreeNode* root , int target , long long sum) {
-        if(!root) return ;
-        if(root->val + sum == target) ans++;
-
-        path(root->left , target , sum + root->val);
-        path(root->right , target , sum + root->val);
-    }
-    void helper(TreeNode* root , int target) {
+    void solve(TreeNode* root , int target , long long sum , map <long long , int> &hash) {
         if(!root) return;
-        path(root , target , 0);
-        helper(root->left , target);
-        helper(root->right , target);
+        
+        sum += root->val;
+        ans += hash[sum - target];
+        hash[sum]++;
+        
+        solve(root->left , target , sum , hash);
+        solve(root->right , target , sum , hash);
+        
+        hash[sum]--;
     }
     int pathSum(TreeNode* root, int targetSum) {
-        helper(root , targetSum);
+        map <long long , int> hash;
+        hash[0] = 1;
+        solve(root , targetSum , 0 , hash);
         return ans;
     }
 };
+
