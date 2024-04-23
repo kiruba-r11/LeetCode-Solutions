@@ -1,23 +1,29 @@
 class Solution {
 public:
-    int numSubarrayBoundedMax(vector<int>& nums, int left, int right) {
+    int find(vector <int> &nums , int range) {
         int n = nums.size();
-        int prev_invalid = -1;
         int ans = 0;
-        int prev_valid_cnt = 0;
-        int prev_valid = -1;
+        int prev_invalid = -1;
         
         for(int i = 0; i < n; i++) {
-            if(nums[i] > right) prev_invalid = i;
-            else if(nums[i] < left) {
-                if(prev_valid > prev_invalid) ans += prev_valid_cnt;
-            }
-            else {
-                prev_valid = i;
-                prev_valid_cnt = i - prev_invalid;
-                ans += i - prev_invalid;
-            }
+            if(nums[i] > range) prev_invalid = i;
+            else ans += i - prev_invalid;
         }
+        
+        return ans;
+    }
+    
+    int numSubarrayBoundedMax(vector<int>& nums, int left, int right) {
+
+        // Better Intuition for problems with [left , right] range
+        // Find [right] (<= right)
+        // Find [left - 1] (<= left)
+        // Find [right] - [left - 1] ([left , right])
+        
+        int r = find(nums , right);
+        int l = find(nums , left - 1);
+        
+        int ans = r - l;
         
         return ans;
     }
