@@ -31,10 +31,9 @@ public:
         while(j < n) {
             cnt[word[j]]++;
             if(condition(cnt , word[j]) == false) {
-                while(i < j) {
-                    cnt[word[i]]--;
-                    i++;
-                }
+                cnt.clear();
+                cnt[word[j]]++;
+                i = j;
             }
             if(count(cnt)) ans = max(ans , j - i + 1);
             j++;
