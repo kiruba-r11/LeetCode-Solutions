@@ -1,21 +1,19 @@
 class Solution {
 public:
-    int minimumCardPickup(vector<int>& nums) {
-        int n = nums.size();
+    int minimumCardPickup(vector<int>& cards) {
+        int n = cards.size();
         int i = 0 , j = 0 , ans = n + 1;
-        unordered_map <int , int> hash;
+        map <int , int> hash;
         
         while(j < n) {
-            if(hash[nums[j]] == 0) {
-                hash[nums[j]]++;
-                j++;
-            } else {
-                while(hash[nums[j]] != 0) {
-                    hash[nums[i]]--;
-                    i++;
-                }
-                ans = min(ans , j - i + 2);
+            hash[cards[j]]++;
+            while(hash[cards[j]] > 1) {
+                if(hash[cards[j]] <= 2 && cards[i] == cards[j]) break;
+                hash[cards[i]]--;
+                i++;
             }
+            if(hash[cards[j]] == 2) ans = min(ans , j - i + 1);
+            j++;
         }
         
         return ans == n + 1 ? -1 : ans;
