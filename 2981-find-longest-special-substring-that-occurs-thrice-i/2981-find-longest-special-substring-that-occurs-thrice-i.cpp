@@ -1,58 +1,44 @@
 class Solution {
 public:
-    bool condition(string &s , int k) {
-    
-        int n = s.size();
-        int i = 0 , j = 0;
-        vector <int> hash(26);
-        vector <int> store(26);
-        
-        while(j < n) {
-            int window = j - i + 1;
-            if(window <= k) {
-                hash[s[j] - 'a']++;
-                
-                if(window == k) {
-                    int cnt = 0;
-                    for(int ch = 0; ch < 26; ch++) {
-                        if(hash[ch] != 0) {
-                            cnt++;
-                        }
-                    }    
-                    if(cnt == 1) {
-                        store[s[j] - 'a']++;
-                    }
-                }
-                
-                j++;
-            } else {
-                hash[s[i] - 'a']--;
-                i++;
-            }
-        }
-        
-        for(int i = 0; i < 26; i++) {
-            if(store[i] >= 3) return true;
-        }
-        
-        return false;
-    }
-    
     int maximumLength(string s) {
         int n = s.size();
-        int low = 1 , high = n;
-        int ans = -1;
+        map <char , vector <int>> hash; //char -> {max_length, max_length_cnt, second_max}
         
-        while(low <= high) {
-            int mid = low + (high - low) / 2;
-            if(condition(s , mid)) {
-                ans = mid;
-                low = mid + 1;
+        for(int i = 0; i < n; i++) {
+            int j = i;
+            while(j < n && s[i] == s[j]) j++;
+            int cnt = j - i;
+            i = j - 1;
+            
+            vector <int> info = hash[s[i]];
+            if(info.size() == 0) {
+                info.resize(3);
+                info[0] = cnt;
+                info[1] = 1;
+                info[2] = 0;
             } else {
-                high = mid - 1;
+                if(cnt == info[0]) {
+                    info[1]++;
+                } else if(cnt > info[0]) {
+                    info[2] = max(info[2] , info[0]);
+                    info[0] = cnt;
+                    info[1] = 1;
+                } else {
+                    if(cnt > info[2]) info[2] = cnt;
+                }
             }
+            hash[s[i]] = info;
         }
         
-        return ans;
+        int ans = -1;
+        for(auto i: hash) {
+            vector <int> info = i.second;
+            if(info[1] >= 3) ans = max(ans , info[0]);
+            else if(info[2] + 1 == info[0] || info[1] == 2) ans = max(ans , info[0] - 1);
+            else ans = max(ans , info[0] - 2);
+        }
+        
+        return ans == 0 ? -1 : ans;
     }
 };
+
