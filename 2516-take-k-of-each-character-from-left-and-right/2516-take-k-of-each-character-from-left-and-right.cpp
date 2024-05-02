@@ -1,54 +1,40 @@
 class Solution {
 public:
-    bool condition(string &s , int k , int allow) {
-    
-        vector <int> hash(3 , 0);
-        int n = s.size();
-        for(int i = 0; i < n; i++) hash[s[i] - 'a']++;
-
-        int i = 0 , j = 0;
-        while(j < n) {
-            int window = j - i + 1;
-            if(window <= k) {
-                hash[s[j] - 'a']--;
-                
-                if(window == k) {
-                    bool check = true;
-                    for(int x = 0; x < 3; x++) {
-                        if(hash[x] < allow) {
-                            check = false;
-                            break;
-                        }
-                    }
-                    if(check) return true;
-                }
-                
-                j++;
-            } else {
-                
-                hash[s[i] - 'a']++;
-                i++;
-                
-            }
+    bool condition(map <char , int> &hash , int k) {
+        for(auto i: hash) {
+            int cnt = i.second;
+            if(i.second < k) return false;
         }
-        
-        return false;
+        return true;
     }
     
     int takeCharacters(string s, int k) {
-        int n = s.size();
-        int low = 0 , high = n;
+        int i = 0 , j = 0;
         int ans = -1;
-        while(low <= high) {
-            int mid = low + (high - low) / 2;
-            if(condition(s , mid , k)) {
-                ans = mid;
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
+        int n = s.size();
+        map <char , int> hash;
+        
+        for(int i = 0; i < n; i++) hash[s[i]]++;
+        
+        string ss = "abc";
+        int cnt = 0;
+        for(int i = 0; i < 3; i++) {
+            if(hash[ss[i]] < k) return -1;
+            if(hash[ss[i]] == k) cnt++;
         }
-
-        return ans == -1 ? -1 : abs(n - ans);
+        
+        if(cnt == 3) return n;
+        
+        while(j < n) {
+            hash[s[j]]--;
+            while(i < j && condition(hash , k) == false) {
+                hash[s[i]]++;
+                i++;
+            }
+            if(condition(hash , k) == true) ans = max(ans , j - i + 1);
+            j++;
+        }
+        
+        return ans == -1 ? -1 : n - ans;
     }
 };
