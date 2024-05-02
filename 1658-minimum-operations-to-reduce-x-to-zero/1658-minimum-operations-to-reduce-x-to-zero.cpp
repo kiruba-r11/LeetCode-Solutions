@@ -18,10 +18,7 @@ public:
                 sum -= nums[i];
                 i++;
             }
-            if((total - sum) == x) {
-                ans = max(ans , j - i + 1);
-                // cout << i << " " << j << endl;
-            }
+            if((total - sum) == x) ans = max(ans , j - i + 1);
             j++;
         }
         
