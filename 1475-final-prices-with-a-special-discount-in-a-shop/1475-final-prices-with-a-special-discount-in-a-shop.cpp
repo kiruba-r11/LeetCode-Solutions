@@ -4,15 +4,18 @@ public:
         int n = prices.size();
         vector <int> ans(n);
         
-        for(int i = 0; i < n; i++) {
-            ans[i] = prices[i];
-            for(int j = i + 1; j < n; j++) {
-                if(prices[j] <= prices[i]) {
-                    ans[i] -= prices[j];
-                    break;
-                }
+        // nearest smaller element towards right -> nsr
+        stack <int> s;
+        
+        for(int i = n - 1; i >= 0; i--) {
+            while(!s.empty() && s.top() > prices[i]) {
+                s.pop();
             }
+            ans[i] = prices[i];
+            if(!s.empty()) ans[i] -= s.top();
+            s.push(prices[i]);
         }
+        
         return ans; 
     }
 };
