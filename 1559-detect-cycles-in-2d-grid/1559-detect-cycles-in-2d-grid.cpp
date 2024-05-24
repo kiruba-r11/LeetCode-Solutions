@@ -23,6 +23,46 @@ public:
         return false;
     }
     
+    bool bfs(vector <vector <char>> &grid , int i , int j , int pi , int pj , vector <vector <int>> &visited , char ch) {
+        
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        queue <vector <int>> q;
+        q.push({i , j , pi , pj});
+        
+        visited[i][j] = true;
+        
+        while(!q.empty()) {
+            int count = q.size();
+            for(int it = 0; it < count; it++) {
+                vector <int> node = q.front();
+                q.pop();
+                
+                int ci = node[0];
+                int cj = node[1];
+                int cpi = node[2];
+                int cpj = node[3];
+                
+                for(auto dir: dirs) {
+                    int x = dir.first + ci;
+                    int y = dir.second + cj;
+                     
+                    if(x >= 0 && y >= 0 && x <= n - 1 && y <= m - 1 && grid[x][y] == ch) {
+                        if(visited[x][y] == false) {
+                            visited[x][y] = true;
+                            q.push({x , y , ci , cj});
+                        } else {
+                            if(x != cpi || y != cpj) return true;
+                        }
+                    }
+                }
+            }
+        }
+     
+        return false;
+    }
+    
     bool containsCycle(vector<vector<char>>& grid) {
         int n = grid.size();
         int m = grid[0].size();
@@ -31,7 +71,8 @@ public:
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < m; j++) {
                 if(visited[i][j] == false) {
-                    bool iscycle = dfs(grid , i , j , -1 , -1 , visited , grid[i][j]);
+                    // bool iscycle = dfs(grid , i , j , -1 , -1 , visited , grid[i][j]);
+                    bool iscycle = bfs(grid , i , j , -1 , -1 , visited , grid[i][j]);
                     if(iscycle) return true;
                 }
             }
