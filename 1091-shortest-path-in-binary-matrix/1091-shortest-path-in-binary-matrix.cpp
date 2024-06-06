@@ -2,43 +2,41 @@ class Solution {
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
         int n = grid.size() , m = grid[0].size();
-        if(grid[0][0] == 1 || grid[n - 1][m - 1] == 1) return -1;
+        int ans = 0;
+        
+        if(grid[0][0] == 1) return -1;
+        
+        vector <pair <int , int>> dirs = {
+            {-1 , -1} , {-1 , 0} , {-1 , 1} , 
+            {0 , -1} , {0 , 0} , {0 , 1} , 
+            {1 , -1} , {1 , 0} , {1 , 1}  
+        };
         
         queue <pair <int , int>> q;
         q.push({0 , 0});
-        int dist = 1;
-        
-        vector <pair <int , int>> dirs = {
-            {1 , 0} , {-1 , 0} , {0 , 1} , {0 , -1} , 
-            {1 , 1} , {-1 , 1} , {1 , -1} , {-1 , -1}
-        };
-        
-        vector <vector <bool>> visited(n , vector <bool> (m));
-        visited[0][0] = true;
+        grid[0][0] = 1;
         
         while(!q.empty()) {
-            int cnt = q.size();
-            for(int it = 0; it < cnt; it++) {
-                int ci = q.front().first;
-                int cj = q.front().second;
+            int count = q.size();
+            ans++;
+            for(int i = 0; i < count; i++) {
+                int ni = q.front().first;
+                int nj = q.front().second;
                 
                 q.pop();
                 
-                if(ci == n - 1 && cj == m - 1) return dist;
+                if(ni == n - 1 && nj == m - 1) return ans;
                 
                 for(auto dir: dirs) {
-                    int ni = dir.first + ci;
-                    int nj = dir.second + cj;
+                    int x = dir.first + ni;
+                    int y = dir.second + nj;
                     
-                    if(ni >= 0 && ni < n && nj >= 0 && nj < m) {
-                        if(!visited[ni][nj] && grid[ni][nj] == 0) {
-                            q.push({ni , nj});
-                            visited[ni][nj] = true;
-                        }
+                    if(x >= 0 && x < n && y >= 0 && y < m && grid[x][y] == 0) {
+                        grid[x][y] = 1;
+                        q.push({x , y});
                     }
                 }
             }
-            dist++;
         }
         
         return -1;
