@@ -48,5 +48,3 @@ public:
         return ans;
      }
 };
-
-// 2,5 - 8,8
