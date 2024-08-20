@@ -1,45 +1,69 @@
 class Solution {
 public:
-    bool valid(vector <int> &shash , vector <int> &thash) {
-        for(int i = 0; i < 127; i++) {
-            if(shash[i] < thash[i]) return false;
+    bool p_check(map <char , int> &hash) {
+    
+        for(auto i: hash) {
+            if(i.second > 0) return false;
         }
         
         return true;
     }
     
+    bool f_check(map <char , int> &hash , int t_size , int window) {
+        
+        for(auto i: hash) {
+            if(i.second < 0) return true;
+        }
+        
+        if(t_size < window) return true;
+        
+        return false;
+    }
+    
     string minWindow(string s, string t) {
         int n = s.size();
+        int m = t.size();
         
-        vector <int> shash(127);
-        vector <int> thash(127);
-        
-        for(auto i: t) thash[i]++;
+        if(n < m) return "";
+        // if(n == m) {
+        //     if(s == t) return s;
+        //     return "";
+        // }
         
         int i = 0 , j = 0;
-        int len = n + 1;
-        int ansi = -1 , ansj = -1;
+        int start = -1 , end = -1;
+        int ans = n;
+        map <char , int> hash;
+        
+        for(auto i: t) {
+            hash[i]++;
+        }
         
         while(j < n) {
-            shash[s[j]]++;
-            while(valid(shash , thash)) {
-                if(shash[s[i]] == thash[s[i]]) break;
-                shash[s[i]]--;
+            if(hash.find(s[j]) != hash.end()) hash[s[j]]--;
+            while(f_check(hash , m , j - i + 1)) {
+                if(hash.find(s[i]) != hash.end()) {
+                    if(hash[s[i]] >= 0) {
+                        break;
+                    }
+                    hash[s[i]]++;
+                }
                 i++;
             }
-
-            if(valid(shash , thash) && (j - i + 1 < len)) {
-                len = j - i + 1;
-                ansi = i , ansj = j;
+            if(p_check(hash)) {
+                if(ans >= (j - i + 1)) {
+                    ans = j - i + 1;
+                    start = i;
+                    end = j;
+                }
             }
             j++;
         }
         
-        if(ansi == -1 || ansj == -1) return "";
+        string r = "";
+        if(start != -1 && end != -1)
+            for(int i = start; i <= end; i++) r.push_back(s[i]);
         
-        string ans = "";
-        for(int i = ansi; i <= ansj; i++) ans.push_back(s[i]);
-        
-        return ans;
+        return r;
     }
 };
