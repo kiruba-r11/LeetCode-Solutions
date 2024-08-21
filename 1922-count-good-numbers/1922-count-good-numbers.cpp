@@ -1,21 +1,29 @@
 class Solution {
 public:
-    int mod = 1000000007;
+    int mod = 1e9 + 7;
     long long fpow(long long base , long long power) {
-    
         if(power == 0) return 1;
         
-        long long store = fpow(((base % mod) * (base % mod)) % mod , power / 2);
-        if(power & 1) return ((store % mod) * (base % mod)) % mod;
-        return store % mod;
+        long long result = fpow((base * 1LL * base) % mod , power / 2) % mod;
+        if(power & 1) return (base * result) % mod;
+        return result;
     }
     
     int countGoodNumbers(long long n) {
-        long long even = fpow(5 , n / 2 + n % 2) % mod;
-        long long odd = fpow(4 , n / 2) % mod;
+        long long even_pos = n % 2 + n / 2;
+        long long odd_pos = n / 2;
         
-        long long ans = (even * odd) % mod;
-        return ans;
+        long long even_ans = fpow(5 , even_pos) % mod;
+        long long odd_ans = fpow(4 , odd_pos) % mod;
+        
+        long long ans = (even_ans * 1LL * odd_ans) % mod;
+        return (int)ans;
     }
 };
+
+
+
+
+
+
 
