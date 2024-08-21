@@ -1,26 +1,16 @@
 class Solution {
 public:
-    int set(vector <int> &bits , int num) {
+    int step(vector <int> &bits , int num , bool set) {
         int val = 0;
         for(int i = 0; i < 31; i++) {
             if((1 << i) & num) {
-                bits[i]++;
+                if(set) bits[i]++;
+                else bits[i]--;
             }
             if(bits[i] != 0) val += (1 << i);
         }
         return val;
     }
-    
-    int unset(vector <int> &bits , int num) {
-        int val = 0;
-        for(int i = 0; i < 31; i++) {
-            if((1 << i) & num) {
-                bits[i]--;
-            }
-            if(bits[i] != 0) val += (1 << i);
-        }
-        return val;
-    } 
     
     int minimumSubarrayLength(vector<int>& nums, int k) {
         int n = nums.size();
@@ -32,11 +22,11 @@ public:
         if(k == 0) return 1;
         
         while(j < n) {
-            opr = set(bits , nums[j]);
+            opr = step(bits , nums[j] , true);
             while(opr >= k) {
-                int temp_opr = unset(bits , nums[i]);
+                int temp_opr = step(bits , nums[i] , false);
                 if(temp_opr < k) {
-                    set(bits , nums[i]);
+                    step(bits , nums[i] , true);
                     break;
                 }
                 opr = temp_opr;
