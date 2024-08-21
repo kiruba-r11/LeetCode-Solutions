@@ -1,27 +1,28 @@
 class Solution {
 public:
-    map <string , bool> hash;
     int ans = 0;
-    
-    void solve(string &s , int idx) {
-        if(idx == s.size()) {
+    void solve(string &s , int start , map <string , int> &hash) {
+        int n = s.size();
+        
+        if(start == n) {
             ans = max(ans , (int)hash.size());
             return;
         }
         
         string prefix = "";
-        for(int i = idx; i < s.size(); i++) {
-            prefix += s[i];
+        for(int i = start; i < n; i++) {
+            prefix.push_back(s[i]);
             if(hash.find(prefix) == hash.end()) {
-                hash[prefix] = true;
-                solve(s , i + 1);
+                hash[prefix] = 1;
+                solve(s , i + 1 , hash);
                 hash.erase(prefix);
             }
         }
     }
     
     int maxUniqueSplit(string s) {
-        solve(s , 0);
+        map <string , int> hash;
+        solve(s , 0 , hash);
         return ans;
     }
 };
