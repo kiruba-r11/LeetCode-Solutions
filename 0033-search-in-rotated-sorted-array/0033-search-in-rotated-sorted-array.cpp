@@ -6,10 +6,10 @@ public:
         while(low <= high) {
             int mid = low + (high - low) / 2;
             if(nums[mid] == target) return mid;
-            if(mid == low) {
-                low = mid + 1;  
-            } else {
-                if(nums[mid] > nums[low]) {
+            // if(mid == low) {
+            //     low = mid + 1;  
+            // } else {
+                if(nums[mid] >= nums[low]) {
                     if(target >= nums[low] && target < nums[mid]) {
                         high = mid - 1;
                     } else {
@@ -22,7 +22,7 @@ public:
                         high = mid - 1;
                     }
                 }
-            }
+            // }
         }
         
         return -1;
