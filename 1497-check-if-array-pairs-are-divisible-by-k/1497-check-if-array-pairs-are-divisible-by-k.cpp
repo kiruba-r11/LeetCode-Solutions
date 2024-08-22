@@ -1,25 +1,22 @@
 class Solution {
 public:
-    bool canArrange(vector<int>& arr, int k) {
-        int n = arr.size();
-        map <int , int> hash;
+    bool canArrange(vector<int>& nums, int k) {
         
+        int n = nums.size();
+        map <int , int> hash;
         for(int i = 0; i < n; i++) {
-            hash[(k + arr[i] % k) % k]++;
+            int rem = (nums[i] % k + k) % k;
+            hash[rem]++;
         }
         
         for(auto i: hash) {
-            int elem = i.first;
-            int count = i.second;
-            int pairelem = k - elem;
-            int paircount = hash[pairelem];
-            
-            if(elem == 0 || pairelem == 0) continue;
-            
-            if(elem == pairelem) {
-                if(count & 1) return false;
-            } else {
-                if(count != paircount) return false;
+            if(i.first == 0) continue;
+            if(i.first * 2 == k) {
+                if(hash[i.first] & 1) return false;
+            } else  {
+                int cnt = hash[i.first];
+                int c_cnt = hash[k - i.first];
+                if(cnt != c_cnt) return false;
             }
         }
         
