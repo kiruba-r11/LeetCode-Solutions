@@ -1,17 +1,17 @@
 class Solution {
 public:
-    bool isVowel(char ch) {
-        string s = "aeiou";
-        for(int i = 0; i < s.size(); i++) {
-            if(ch == s[i]) return true;
+    bool is_vowel(char s) {
+        string vowel = "aeiou";
+        for(auto i: vowel) {
+            if(i == s) return true;
         }
         return false;
     }
     
-    int getIndex(char ch) {
-        string s = "aeiou";
-        for(int i = 0; i < s.size(); i++) {
-            if(ch == s[i]) return i;
+    int get_vowel_id(char s) {
+        string vowel = "aeiou";
+        for(int i = 0; i < 5; i++) {
+            if(vowel[i] == s) return i;
         }
         return -1;
     }
@@ -19,18 +19,21 @@ public:
     int findTheLongestSubstring(string s) {
         int n = s.size();
         int ans = 0;
-        vector <int> temp(5 , 0);
+        vector <int> prefix(5 , 0);
         map <vector <int> , int> hash;
-        hash[temp] = -1;
+        hash[{0 , 0 , 0 , 0 , 0}] = -1;
         
         for(int i = 0; i < n; i++) {
-            if(isVowel(s[i])) {
-                temp[getIndex(s[i])]++;
-                temp[getIndex(s[i])] %= 2;
+            if(is_vowel(s[i])) {
+                int pos = get_vowel_id(s[i]);
+                prefix[pos]++;
+                prefix[pos] %= 2;
             }
-            
-            if(hash.find(temp) == hash.end()) hash[temp] = i;
-            else ans = max(ans , i - hash[temp]);
+            if(hash.find(prefix) != hash.end()) {
+                ans = max(ans , i - hash[prefix]);
+            } else {
+                hash[prefix] = i;
+            }
         }
         
         return ans;
