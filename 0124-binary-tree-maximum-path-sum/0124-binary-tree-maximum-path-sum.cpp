@@ -11,25 +11,38 @@
  */
 class Solution {
 public:
-    // {sum that can be extended, sum that cannot be extended}
-    pair <int , int> pathsum(TreeNode* root) {
+    int ans = -1001;
+    // {extendible path, non-extendible path}
+    pair <int , int> solve(TreeNode* root) {
         if(!root) return {-1001 , -1001};
-        if(!root->left && !root->right) return {root->val , root->val};
+        if(!root->left && !root->right) {
+            ans = max(ans , root->val);
+            return {root->val , root->val};
+        }
         
-        pair <int , int> left = pathsum(root->left);
-        pair <int , int> right = pathsum(root->right);
+        pair <int , int> left = solve(root->left);
+        pair <int , int> right = solve(root->right);
         
-        pair <int , int> ans;
+        pair <int , int> cur;
         
-        ans.first = max(root->val , max(left.first , right.first) + root->val);
-        ans.second = max(left.first + right.first + root->val , 
-                     max(max(left.first , right.first) , 
-                         max(left.second , right.second)));
+        // Extendible path for cur:
+        // max(left extendible path + cur_sum , right extendible path + cur_sum , cur_sum)
+        cur.first = max(max(left.first , right.first) + root->val , root->val);
         
-        return ans;
+        
+        // Non-Extendible path for cur:
+        // max( left non-extendible path , 
+        //      right non-extendible path ,
+        //      left extendible path + right extendible path + cur_sum)
+        cur.second = max(max(left.second , right.second) , left.first + right.first + root->val);
+        
+        ans = max(ans , max(cur.first , cur.second));
+        
+        return cur;
     }
+    
     int maxPathSum(TreeNode* root) {
-        pair <int , int> ans = pathsum(root);
-        return max(ans.first , ans.second);
+        solve(root);
+        return ans;
     }
 };
