@@ -11,25 +11,27 @@
  */
 class Solution {
 public:
-    // states ->
-    //          -1 -> Needs a camera
-    //           0 -> Buys a camera
-    //           1 -> Already covered, no need of camera
-    
+    // 1 -> have a camera
+    // 0 -> covered by a camera
+    // -1 -> not covered by a camera
     int camera = 0;
     int solve(TreeNode* root) {
-        if(!root) return 1;
-        if(!root->left && !root->right) return -1;
+        if(!root) return 0;
         
         int left = solve(root->left);
         int right = solve(root->right);
+        int cur = -2;
         
-        if(left == -1 || right == -1) {
+        if(left + right >= 1) {
+            cur = 0;
+        } else if(left == 0 && right == 0) {
+            cur = -1;
+        } else {
             camera++;
-            return 0;
-        } 
-        if(left == 1 && right == 1) return -1;
-        return 1;
+            cur = 1;
+        }
+        
+        return cur; 
     }
     
     int minCameraCover(TreeNode* root) {
