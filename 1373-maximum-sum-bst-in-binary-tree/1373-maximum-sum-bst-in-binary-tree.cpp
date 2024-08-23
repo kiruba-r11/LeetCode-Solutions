@@ -11,45 +11,39 @@
  */
 class Solution {
 public:
-    int sum = 0;
-    int minval = -1e5;
-    int maxval = 1e5;
-    
-    // state = {minnode, maxnode, is_bst , sum}
+    int ans = 0;
+    // {max_val , min_val , is_bst , sum}
     vector <int> solve(TreeNode* root) {
-        if(!root) return {maxval , minval , true , 0};
-        // if(!root->left && !root->right) {
-        //     sum = max(sum , root->val);
-        //     return {root->val , root->val , true , root->val};
-        // }
+        if(!root) return {(int)-1e5 , (int)1e5 , 1 , 0};
+        if(!root->left && !root->right) {
+            ans = max(ans , root->val);
+            return {root->val , root->val , 1 , root->val};
+        }
         
         vector <int> left = solve(root->left);
         vector <int> right = solve(root->right);
         
-        vector <int> ans;
+        vector <int> cur(4);
         
-        int curmin = min(min(left[0] , right[0]) , root->val);
-        int curmax = max(max(left[1] , right[1]) , root->val);
+        // check max
+        cur[0] = max(max(left[0] , right[0]) , root->val);
         
-        // left and right are bst
-        if(left[2] && right[2]) {
-            // current root can be included in the bst
-            if(root->val > left[1] && root->val < right[0]) {
-                ans = {curmin , curmax , true , root->val + left[3] + right[3]}; 
-                sum = max(sum , max(left[3] , right[3]));
-                sum = max(sum , root->val + left[3] + right[3]);
-            } else { // current root cannot be included in the bst
-                ans = {curmin , curmax , false , max(left[3] , right[3])};
-            }
-        } else {
-            ans = {curmin , curmax , false , max(left[3] , right[3])};
-        }
+        // check min
+        cur[1] = min(min(left[1] , right[1]) , root->val);
         
-        return ans;
+        // check is_bst
+        if(left[2] == 1 && right[2] == 1 && root->val > left[0] && root->val < right[1]) cur[2] = 1;
+        
+        // check sum
+        cur[3] = left[3] + right[3] + root->val;
+        
+        if(cur[2] == 1) ans = max(ans , cur[3]);
+        
+        return cur;
     }
     
     int maxSumBST(TreeNode* root) {
         solve(root);
-        return sum;
+        return ans;
     }
 };
