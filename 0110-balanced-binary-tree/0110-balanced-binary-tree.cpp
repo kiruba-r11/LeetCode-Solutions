@@ -11,20 +11,22 @@
  */
 class Solution {
 public:
-    int find_height(TreeNode* root) {
-        if(!root) return 0;
-        if(!root->left && !root->right) return 1;
+    pair <int , bool> solve(TreeNode* root) {
+        if(!root) return {0 , true};
+        if(!root->left && !root->right) return {1 , true};
         
-        return max(find_height(root->left) , find_height(root->right)) + 1;
+        pair <int , bool> left = solve(root->left);
+        pair <int , bool> right = solve(root->right);
+        
+        pair <int , int> cur;
+        
+        cur.first = max(left.first , right.first) + 1;
+        cur.second = left.second && right.second && abs(left.first - right.first) <= 1;
+        
+        return cur;
     }
+    
     bool isBalanced(TreeNode* root) {
-        if(!root) return true;
-        if(!root->left && !root->right) return true;
-        
-        int leftHeight = find_height(root->left);
-        int rightHeight = find_height(root->right);
-        
-        if(abs(leftHeight - rightHeight) <= 1 && isBalanced(root->left) && isBalanced(root->right)) return true;
-        return false;
+        return solve(root).second;
     }
 };
